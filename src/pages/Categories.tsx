@@ -1,111 +1,141 @@
 import React, { useState } from 'react';
 import ProductGrid from '../components/ProductGrid';
-import FiltersSidebar from '../components/FiltersSidebar';
-import { SlidersHorizontal, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { Laptop, Cpu, MemoryStick, HardDrive, X } from 'lucide-react';
 
 export default function Categories() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [priceRange, setPriceRange] = useState<number>(5000);
   const [conditions, setConditions] = useState<string[]>([]);
-  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+
+  const toggleCondition = (condition: string) => {
+    if (conditions.includes(condition)) {
+      setConditions(conditions.filter(c => c !== condition));
+    } else {
+      setConditions([...conditions, condition]);
+    }
+  };
+
+  const categories = [
+    { name: 'Laptops', icon: Laptop },
+    { name: 'Processors', icon: Cpu },
+    { name: 'Memory', icon: MemoryStick },
+    { name: 'Storage', icon: HardDrive },
+  ];
+
+  const hasActiveFilters = selectedCategory || priceRange < 5000 || conditions.length > 0;
+
+  const clearAllFilters = () => {
+    setSelectedCategory(null);
+    setPriceRange(5000);
+    setConditions([]);
+  };
 
   return (
     <div className="bg-[#FAFAFA] min-h-screen">
-      <div className="bg-[#1a202c] py-20 text-white mb-16">
+      {/* Header with Inline Filters */}
+      <div className="bg-[#1a202c] text-white pb-10 pt-20 mb-10">
         <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          {/* Title */}
+          <h1 className="text-3xl md:text-4xl font-bold mb-2 tracking-tight">Technical Categories</h1>
+          <p className="text-gray-400 max-w-2xl text-sm md:text-base leading-relaxed mb-8">
+            Browse our specialized inventory organized by performance tier and hardware architecture.
+          </p>
+
+          {/* Filter Options — inside the banner */}
+          <div className="space-y-6">
+            {/* Category Pills */}
             <div>
-              <h1 className="text-4xl font-bold mb-4 tracking-tight">Technical Categories</h1>
-              <p className="text-gray-400 max-w-2xl text-sm md:text-base leading-relaxed">
-                Browse our specialized inventory organized by performance tier and hardware architecture.
-              </p>
+              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-3">Category</p>
+              <div className="flex flex-wrap gap-2">
+                {categories.map((cat) => {
+                  const isActive = selectedCategory === cat.name;
+                  return (
+                    <button
+                      key={cat.name}
+                      onClick={() => setSelectedCategory(isActive ? null : cat.name)}
+                      className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                        isActive
+                          ? 'bg-white text-[#1a202c] shadow-lg shadow-black/20'
+                          : 'bg-white/10 text-gray-300 hover:bg-white/20 border border-white/5'
+                      }`}
+                    >
+                      <cat.icon size={16} />
+                      <span>{cat.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-            
-            <button 
-              onClick={() => setIsMobileFiltersOpen(true)}
-              className="lg:hidden flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-xl border border-white/10 transition-all active:scale-95 self-start"
-            >
-              <SlidersHorizontal size={18} />
-              <span className="text-sm font-bold uppercase tracking-widest">Filter</span>
-            </button>
+
+            {/* Price + Condition Row */}
+            <div className="flex flex-col sm:flex-row gap-6 sm:items-end">
+              {/* Price Range */}
+              <div className="flex-1 max-w-xs">
+                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-3">
+                  Max Price: <span className="text-white">${priceRange}</span>
+                </p>
+                <input
+                  type="range"
+                  min="100"
+                  max="5000"
+                  step="100"
+                  value={priceRange}
+                  onChange={(e) => setPriceRange(Number(e.target.value))}
+                  className="w-full h-1.5 bg-white/20 rounded-full appearance-none cursor-pointer accent-white"
+                />
+                <div className="flex justify-between text-[10px] text-gray-500 mt-1.5">
+                  <span>$100</span>
+                  <span>$5000</span>
+                </div>
+              </div>
+
+              {/* Condition */}
+              <div className="flex items-center gap-3">
+                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mr-1 hidden sm:block">Condition:</p>
+                <button
+                  onClick={() => toggleCondition('Brand New')}
+                  className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    conditions.includes('Brand New')
+                      ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30'
+                      : 'bg-white/10 text-gray-300 hover:bg-white/20 border border-white/5'
+                  }`}
+                >
+                  Brand New
+                </button>
+                <button
+                  onClick={() => toggleCondition('Refurbished')}
+                  className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    conditions.includes('Refurbished')
+                      ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/30'
+                      : 'bg-white/10 text-gray-300 hover:bg-white/20 border border-white/5'
+                  }`}
+                >
+                  Refurbished
+                </button>
+              </div>
+
+              {/* Clear All */}
+              {hasActiveFilters && (
+                <button
+                  onClick={clearAllFilters}
+                  className="flex items-center gap-1.5 text-red-400 hover:text-red-300 text-xs font-bold uppercase tracking-widest transition-colors self-end pb-1"
+                >
+                  <X size={14} />
+                  Clear All
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
       
-      {/* Mobile Filters Drawer */}
-      <AnimatePresence>
-        {isMobileFiltersOpen && (
-          <>
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMobileFiltersOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] lg:hidden"
-            />
-            <motion.div 
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed right-0 top-0 bottom-0 w-[85%] max-w-sm bg-white z-[101] lg:hidden shadow-2xl p-6 flex flex-col"
-            >
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-xl font-bold text-[#1a202c]">Filters</h2>
-                <button 
-                  onClick={() => setIsMobileFiltersOpen(false)}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                >
-                  <X size={24} />
-                </button>
-              </div>
-              
-              <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
-                <FiltersSidebar 
-                  selectedCategory={selectedCategory}
-                  setSelectedCategory={setSelectedCategory}
-                  priceRange={priceRange}
-                  setPriceRange={setPriceRange}
-                  conditions={conditions}
-                  setConditions={setConditions}
-                />
-              </div>
-              
-              <button 
-                onClick={() => setIsMobileFiltersOpen(false)}
-                className="w-full bg-[#1a202c] text-white py-4 rounded-xl font-bold uppercase tracking-widest mt-6"
-              >
-                Apply Filters
-              </button>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-      
+      {/* Product Grid — full width, no sidebar */}
       <div className="w-full px-4 sm:px-6 lg:px-8 pb-24">
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Left Sidebar */}
-          <div className="hidden lg:block w-64 shrink-0">
-            <FiltersSidebar 
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              priceRange={priceRange}
-              setPriceRange={setPriceRange}
-              conditions={conditions}
-              setConditions={setConditions}
-            />
-          </div>
-          
-          {/* Right Product Grid */}
-          <div className="flex-1">
-            <ProductGrid 
-              categoryFilter={selectedCategory}
-              priceFilter={priceRange}
-              conditionFilter={conditions}
-            />
-          </div>
-        </div>
+        <ProductGrid 
+          categoryFilter={selectedCategory}
+          priceFilter={priceRange}
+          conditionFilter={conditions}
+        />
       </div>
     </div>
   );
