@@ -17,9 +17,9 @@ export default function Categories() {
 
   const categories = [
     { name: 'Laptops', icon: Laptop },
-    { name: 'Processors', icon: Cpu },
-    { name: 'Memory', icon: MemoryStick },
-    { name: 'Storage', icon: HardDrive },
+    { name: 'Accessories', icon: MemoryStick },
+    { name: 'Monitors', icon: HardDrive },
+    { name: 'Audio', icon: Cpu },
   ];
 
   const hasActiveFilters = selectedCategory || priceRange < 5000 || conditions.length > 0;

@@ -42,7 +42,12 @@ export default function ProductGrid({ title, count = 12, categoryFilter, priceFi
         }
 
         if (categoryFilter) {
-          publishedProducts = publishedProducts.filter(p => p.category && p.category.toLowerCase().includes(categoryFilter.toLowerCase()));
+          if (categoryFilter.toLowerCase() === 'laptops') {
+            const laptopBrands = ['apple', 'dell', 'lenovo', 'hp', 'asus', 'razer', 'microsoft', 'gigabyte'];
+            publishedProducts = publishedProducts.filter(p => p.category && laptopBrands.includes(p.category.toLowerCase()));
+          } else {
+            publishedProducts = publishedProducts.filter(p => p.category && p.category.toLowerCase().includes(categoryFilter.toLowerCase()));
+          }
         }
         
         if (priceFilter) {

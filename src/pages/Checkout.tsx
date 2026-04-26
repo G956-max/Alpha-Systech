@@ -37,11 +37,11 @@ export default function Checkout() {
   const [cartItems] = useState<CartItem[]>(stateItems || [
     {
       id: '1',
-      name: 'Handcrafted Ceramic Vase',
-      price: 89,
-      category: 'Home Decor',
-      variant: 'Satin White',
-      imageUrl: 'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&q=80&w=400',
+      name: 'MacBook Pro M3 Max',
+      price: 3499,
+      category: 'Apple',
+      variant: '14-inch, Space Black',
+      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=800',
       quantity: 1
     }
   ]);
@@ -159,6 +159,7 @@ export default function Checkout() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="sm:col-span-2 relative">
                     <select className="w-full bg-white border border-gray-200 rounded-xl px-4 py-4 text-sm appearance-none focus:outline-none focus:border-[#2C2C2C] transition-all">
+                      <option>India</option>
                       <option>United States</option>
                       <option>Canada</option>
                       <option>United Kingdom</option>
@@ -173,9 +174,41 @@ export default function Checkout() {
                   <div className="relative">
                     <select className="w-full bg-white border border-gray-200 rounded-xl px-4 py-4 text-sm appearance-none focus:outline-none focus:border-[#2C2C2C] transition-all">
                       <option>State</option>
-                      <option>California</option>
-                      <option>New York</option>
-                      <option>Texas</option>
+                      <option>Andhra Pradesh</option>
+                      <option>Arunachal Pradesh</option>
+                      <option>Assam</option>
+                      <option>Bihar</option>
+                      <option>Chhattisgarh</option>
+                      <option>Goa</option>
+                      <option>Gujarat</option>
+                      <option>Haryana</option>
+                      <option>Himachal Pradesh</option>
+                      <option>Jharkhand</option>
+                      <option>Karnataka</option>
+                      <option>Kerala</option>
+                      <option>Madhya Pradesh</option>
+                      <option>Maharashtra</option>
+                      <option>Manipur</option>
+                      <option>Meghalaya</option>
+                      <option>Mizoram</option>
+                      <option>Nagaland</option>
+                      <option>Odisha</option>
+                      <option>Punjab</option>
+                      <option>Rajasthan</option>
+                      <option>Sikkim</option>
+                      <option>Tamil Nadu</option>
+                      <option>Telangana</option>
+                      <option>Tripura</option>
+                      <option>Uttar Pradesh</option>
+                      <option>Uttarakhand</option>
+                      <option>West Bengal</option>
+                      <option>Andaman and Nicobar Islands</option>
+                      <option>Chandigarh</option>
+                      <option>Delhi</option>
+                      <option>Jammu and Kashmir</option>
+                      <option>Ladakh</option>
+                      <option>Lakshadweep</option>
+                      <option>Puducherry</option>
                     </select>
                     <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                   </div>
