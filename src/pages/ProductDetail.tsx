@@ -11,7 +11,10 @@ import {
   ShieldCheck,
   Heart,
   Share2,
-  MessageSquare
+  MessageSquare,
+  ZoomIn,
+  ZoomOut,
+  Maximize2
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useRequireAuth } from '../hooks/useRequireAuth';
@@ -54,6 +57,11 @@ export default function ProductDetail() {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(0);
+  const [zoomLevel, setZoomLevel] = useState(1);
+  
+  const handleZoomIn = () => setZoomLevel(prev => Math.min(prev + 0.5, 3));
+  const handleZoomOut = () => setZoomLevel(prev => Math.max(prev - 0.5, 1));
+  const resetZoom = () => setZoomLevel(1);
   const [quantity, setQuantity] = useState(1);
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [openAccordion, setOpenAccordion] = useState<string | null>('materials');
@@ -343,7 +351,8 @@ export default function ProductDetail() {
               <img 
                 src={productImages[activeImage]} 
                 alt={product.name} 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                style={{ transform: `scale(${zoomLevel})` }}
+                className="w-full h-full object-cover transition-transform duration-300"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute top-6 right-6 flex flex-col gap-2">
@@ -356,6 +365,31 @@ export default function ProductDetail() {
                 </button>
                 <button onClick={handleShare} className="p-3 bg-white/80 backdrop-blur-md rounded-full text-gray-400 hover:text-[#2C2C2C] transition-all shadow-sm" title="Share Product">
                   <Share2 size={20} />
+                </button>
+              </div>
+
+              {/* Zoom Controls */}
+              <div className="absolute bottom-6 right-6 flex gap-2">
+                <button 
+                  onClick={handleZoomIn}
+                  className="p-2 bg-white/80 backdrop-blur-md rounded-lg text-gray-600 hover:text-black transition-all shadow-sm border border-gray-100"
+                  title="Zoom In"
+                >
+                  <ZoomIn size={18} />
+                </button>
+                <button 
+                  onClick={handleZoomOut}
+                  className="p-2 bg-white/80 backdrop-blur-md rounded-lg text-gray-600 hover:text-black transition-all shadow-sm border border-gray-100"
+                  title="Zoom Out"
+                >
+                  <ZoomOut size={18} />
+                </button>
+                <button 
+                  onClick={resetZoom}
+                  className="p-2 bg-white/80 backdrop-blur-md rounded-lg text-gray-600 hover:text-black transition-all shadow-sm border border-gray-100"
+                  title="Reset Zoom"
+                >
+                  <Maximize2 size={18} />
                 </button>
               </div>
             </div>
