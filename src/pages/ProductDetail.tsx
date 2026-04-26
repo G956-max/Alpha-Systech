@@ -57,19 +57,11 @@ export default function ProductDetail() {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(0);
-  const [zoomOrigin, setZoomOrigin] = useState('center');
-  const [isHovered, setIsHovered] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(1);
   
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const target = e.currentTarget;
-    const rect = target.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    
-    // Smoothly update the origin
-    setZoomOrigin(`${x}% ${y}%`);
-    setIsHovered(true);
-  };
+  const handleZoomIn = () => setZoomLevel(prev => Math.min(prev + 0.5, 3));
+  const handleZoomOut = () => setZoomLevel(prev => Math.max(prev - 0.5, 1));
+  const resetZoom = () => setZoomLevel(1);
   const [quantity, setQuantity] = useState(1);
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [openAccordion, setOpenAccordion] = useState<string | null>('materials');
@@ -355,34 +347,51 @@ export default function ProductDetail() {
           
           {/* Left: Image Gallery */}
           <div className="w-full lg:w-1/2 space-y-4">
-            <div 
-              className="aspect-square rounded-[32px] overflow-hidden bg-white shadow-sm border border-gray-300 relative group cursor-zoom-in"
-              onMouseMove={handleMouseMove}
-              onMouseLeave={() => setIsHovered(false)}
-            >
+            <div className="aspect-square rounded-[32px] overflow-hidden bg-white shadow-sm border border-gray-300 relative group">
               <img 
                 src={productImages[activeImage]} 
                 alt={product.name} 
-                style={{ 
-                  transformOrigin: zoomOrigin,
-                  transform: isHovered ? 'scale(2.5)' : 'scale(1)'
-                }}
-                className="w-full h-full object-contain transition-transform duration-300 ease-out"
+                style={{ transform: `scale(${zoomLevel})` }}
+                className="w-full h-full object-contain transition-transform duration-300"
                 referrerPolicy="no-referrer"
               />
-              <div className="absolute top-6 right-6 flex flex-col gap-2 pointer-events-none group-hover:opacity-0 transition-opacity">
+              <div className="absolute top-6 right-6 flex flex-col gap-2">
                 <button 
-                  className="p-3 bg-white/80 backdrop-blur-md rounded-full text-gray-400 shadow-sm" 
+                  onClick={handleToggleWishlist}
+                  className="p-3 bg-white/80 backdrop-blur-md rounded-full text-gray-400 hover:text-red-500 transition-all shadow-sm" 
+                  title={isInWishlist(product.id) ? "Remove from Wishlist" : "Add to Wishlist"}
                 >
                   <Heart size={20} className={isInWishlist(product.id) ? "fill-red-500 text-red-500" : ""} />
                 </button>
+                <button onClick={handleShare} className="p-3 bg-white/80 backdrop-blur-md rounded-full text-gray-400 hover:text-[#2C2C2C] transition-all shadow-sm" title="Share Product">
+                  <Share2 size={20} />
+                </button>
               </div>
-              
-              {!isHovered && (
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/50 backdrop-blur-sm rounded-full text-white text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                  Roll over image to zoom
-                </div>
-              )}
+
+              {/* Zoom Controls */}
+              <div className="absolute bottom-6 right-6 flex gap-2">
+                <button 
+                  onClick={handleZoomIn}
+                  className="p-2 bg-white/80 backdrop-blur-md rounded-lg text-gray-600 hover:text-black transition-all shadow-sm border border-gray-100"
+                  title="Zoom In"
+                >
+                  <ZoomIn size={18} />
+                </button>
+                <button 
+                  onClick={handleZoomOut}
+                  className="p-2 bg-white/80 backdrop-blur-md rounded-lg text-gray-600 hover:text-black transition-all shadow-sm border border-gray-100"
+                  title="Zoom Out"
+                >
+                  <ZoomOut size={18} />
+                </button>
+                <button 
+                  onClick={resetZoom}
+                  className="p-2 bg-white/80 backdrop-blur-md rounded-lg text-gray-600 hover:text-black transition-all shadow-sm border border-gray-100"
+                  title="Reset Zoom"
+                >
+                  <Maximize2 size={18} />
+                </button>
+              </div>
             </div>
             
             <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
