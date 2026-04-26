@@ -111,10 +111,10 @@ export default function Checkout() {
 
   return (
     <div className="min-h-screen bg-[#FAF9F6] text-[#2C2C2C] font-sans">
-      <div className="w-full flex flex-col lg:flex-row min-h-screen">
+      <div className="w-full flex flex-col-reverse lg:flex-row min-h-screen">
         
         {/* LEFT SIDE: Checkout Form */}
-        <div className="flex-grow lg:w-3/5 p-6 sm:p-10 lg:p-16 border-r border-gray-200">
+        <div className="flex-grow lg:w-3/5 p-6 sm:p-10 lg:p-16 lg:border-r border-gray-200">
           <div className="max-w-xl ml-auto">
             {/* Header / Breadcrumbs */}
             <div className="flex items-center gap-2 text-xs font-medium text-gray-400 mb-10 uppercase tracking-widest">
@@ -357,7 +357,7 @@ export default function Checkout() {
         </div>
 
         {/* RIGHT SIDE: Order Summary */}
-        <div className="lg:w-2/5 bg-white lg:bg-transparent p-6 sm:p-10 lg:p-16">
+        <div className="lg:w-2/5 bg-white lg:bg-transparent p-6 sm:p-10 lg:p-16 border-b lg:border-b-0 border-gray-200">
           <div className="max-w-md mx-auto lg:mx-0">
             <div className="space-y-8">
               {/* Items List */}
