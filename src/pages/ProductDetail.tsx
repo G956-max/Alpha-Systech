@@ -317,7 +317,7 @@ export default function ProductDetail() {
     {
       id: 'shipping',
       title: 'Shipping & Returns',
-      content: 'Free standard shipping on orders over $150. Returns accepted within 30 days of delivery in original packaging.'
+      content: 'Fast doorstep delivery available across all regions. Returns accepted within 30 days of delivery in original packaging.'
     }
   ];
 
@@ -459,7 +459,7 @@ export default function ProductDetail() {
               <div className="flex items-center justify-between py-4 border-y border-gray-100 text-sm text-gray-500 font-medium">
                 <div className="flex items-center gap-2">
                   <Truck size={18} className="text-gray-400" />
-                  <span>Free Shipping</span>
+                  <span>Doorstep Delivery</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <RefreshCcw size={18} className="text-gray-400" />

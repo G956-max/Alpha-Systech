@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, Shield, Banknote, Headphones } from 'lucide-react';
 import CategoryGrid from '../components/CategoryGrid';
+import { allProducts } from '../data/products';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -51,9 +52,42 @@ export default function Home() {
           <CategoryGrid title="Shop by Category" />
         </div>
       </section>
-
-
-
+      
+      {/* Top Products Section */}
+      <section className="w-full px-4 sm:px-6 lg:px-8 py-12 bg-white">
+        <div className="w-full">
+          <h2 className="text-2xl font-bold text-[#1a202c] mb-10 font-serif">Top Products</h2>
+          
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
+            {allProducts.slice(0, 16).map((product) => (
+              <div 
+                key={product.id} 
+                onClick={() => navigate(`/product/${product.id}`)}
+                className="group cursor-pointer flex flex-col h-full"
+              >
+                <div className="relative aspect-square overflow-hidden bg-gray-100 mb-3">
+                  <img 
+                    src={product.image} 
+                    alt={product.name}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-1.5 py-0.5 text-[10px] font-bold text-[#1a202c]">
+                    ${product.price}
+                  </div>
+                </div>
+                <div className="flex flex-col flex-grow">
+                  <h3 className="text-[10px] font-bold text-[#1a202c] leading-tight mb-1 group-hover:underline line-clamp-2">
+                    {product.name}
+                  </h3>
+                  <p className="text-[8px] text-gray-400 font-medium uppercase tracking-tighter">
+                    {product.category}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

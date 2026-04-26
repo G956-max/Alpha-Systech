@@ -46,13 +46,14 @@ export default function Checkout() {
     }
   ]);
 
-  const [shippingMethod, setShippingMethod] = useState<'standard' | 'express'>('standard');
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'paypal'>('card');
+  const [paymentMethod] = useState<'Online'>('Online');
+  const [selectedUpi, setSelectedUpi] = useState<'gpay' | 'phonepe' | 'paytm' | null>(null);
+  const [upiId, setUpiId] = useState('');
   const [discountCode, setDiscountCode] = useState('');
   const [discountApplied, setDiscountApplied] = useState(false);
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const shippingCost = shippingMethod === 'standard' ? 15 : 35;
+  const shippingCost = 0;
   const taxes = subtotal * 0.08;
   const discount = discountApplied ? subtotal * 0.1 : 0;
   const total = subtotal + shippingCost + taxes - discount;
@@ -86,8 +87,8 @@ export default function Checkout() {
         discount,
         total,
         status: 'Processing',
-        shippingMethod,
-        paymentMethod,
+        paymentMethod: selectedUpi ? `UPI (${selectedUpi.toUpperCase()})` : 'Card',
+        upiDetails: selectedUpi ? upiId : null,
         createdAt: serverTimestamp(),
       };
 
@@ -120,8 +121,6 @@ export default function Checkout() {
               <Link to="/cart" className="hover:text-[#2C2C2C] transition-colors">Cart</Link>
               <ChevronRight size={12} />
               <span className="text-[#2C2C2C]">Information</span>
-              <ChevronRight size={12} />
-              <span>Shipping</span>
               <ChevronRight size={12} />
               <span>Payment</span>
             </div>
@@ -196,50 +195,6 @@ export default function Checkout() {
                 </div>
               </section>
 
-              {/* Shipping Method Section */}
-              <section className="space-y-6">
-                <h2 className="text-xl font-serif font-bold">Shipping method</h2>
-                <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white">
-                  <label className={`flex items-center justify-between p-5 cursor-pointer transition-colors ${shippingMethod === 'standard' ? 'bg-[#FAF9F6]' : 'hover:bg-gray-50'}`}>
-                    <div className="flex items-center gap-4">
-                      <div className="relative flex items-center justify-center">
-                        <input 
-                          type="radio" 
-                          name="shipping" 
-                          checked={shippingMethod === 'standard'}
-                          onChange={() => setShippingMethod('standard')}
-                          className="peer appearance-none w-5 h-5 border border-gray-300 rounded-full checked:border-[#2C2C2C] checked:border-[6px] transition-all" 
-                        />
-                      </div>
-                      <div className="space-y-0.5">
-                        <p className="text-sm font-bold">Standard Shipping</p>
-                        <p className="text-xs text-gray-500">3–5 business days</p>
-                      </div>
-                    </div>
-                    <span className="text-sm font-bold">$15.00</span>
-                  </label>
-                  <div className="h-[1px] bg-gray-100 mx-5"></div>
-                  <label className={`flex items-center justify-between p-5 cursor-pointer transition-colors ${shippingMethod === 'express' ? 'bg-[#FAF9F6]' : 'hover:bg-gray-50'}`}>
-                    <div className="flex items-center gap-4">
-                      <div className="relative flex items-center justify-center">
-                        <input 
-                          type="radio" 
-                          name="shipping" 
-                          checked={shippingMethod === 'express'}
-                          onChange={() => setShippingMethod('express')}
-                          className="peer appearance-none w-5 h-5 border border-gray-300 rounded-full checked:border-[#2C2C2C] checked:border-[6px] transition-all" 
-                        />
-                      </div>
-                      <div className="space-y-0.5">
-                        <p className="text-sm font-bold">Express Shipping</p>
-                        <p className="text-xs text-gray-500">1–2 business days</p>
-                      </div>
-                    </div>
-                    <span className="text-sm font-bold">$35.00</span>
-                  </label>
-                </div>
-              </section>
-
               {/* Payment Section */}
               <section className="space-y-6">
                 <div className="space-y-1">
@@ -248,56 +203,95 @@ export default function Checkout() {
                 </div>
                 
                 <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white">
-                  <div className={`p-5 space-y-6 ${paymentMethod === 'card' ? 'bg-[#FAF9F6]' : ''}`}>
-                    <label className="flex items-center justify-between cursor-pointer">
+                  <div className="p-5 space-y-6 bg-[#FAF9F6]">
+                    <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <input 
-                          type="radio" 
-                          name="payment" 
-                          checked={paymentMethod === 'card'}
-                          onChange={() => setPaymentMethod('card')}
-                          className="peer appearance-none w-5 h-5 border border-gray-300 rounded-full checked:border-[#2C2C2C] checked:border-[6px] transition-all" 
-                        />
-                        <span className="text-sm font-bold">Credit card</span>
+                        <div className="w-5 h-5 border-4 border-[#2C2C2C] rounded-full transition-all"></div>
+                        <span className="text-sm font-bold">Online Payment (UPI, Card, Wallets)</span>
                       </div>
-                      <div className="flex gap-1">
-                        <div className="w-8 h-5 bg-gray-100 rounded border border-gray-200"></div>
-                        <div className="w-8 h-5 bg-gray-100 rounded border border-gray-200"></div>
-                        <div className="w-8 h-5 bg-gray-100 rounded border border-gray-200"></div>
+                      <div className="flex gap-2">
+                        {/* Mock Payment Logos */}
+                        <div className="px-2 py-0.5 bg-white border border-gray-100 rounded text-[10px] font-bold text-blue-600">GPay</div>
+                        <div className="px-2 py-0.5 bg-white border border-gray-100 rounded text-[10px] font-bold text-purple-600">PhonePe</div>
+                        <div className="px-2 py-0.5 bg-white border border-gray-100 rounded text-[10px] font-bold text-sky-500">Paytm</div>
                       </div>
-                    </label>
-
-                    {paymentMethod === 'card' && (
-                      <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                        <div className="col-span-2 relative">
-                          <input type="text" placeholder="Card number" className="w-full bg-white border border-gray-200 rounded-xl px-4 py-4 text-sm focus:outline-none focus:border-[#2C2C2C] transition-all" />
-                          <ShieldCheck size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                        </div>
-                        <input type="text" placeholder="Expiration date (MM / YY)" className="w-full bg-white border border-gray-200 rounded-xl px-4 py-4 text-sm focus:outline-none focus:border-[#2C2C2C] transition-all" />
-                        <div className="relative">
-                          <input type="text" placeholder="Security code" className="w-full bg-white border border-gray-200 rounded-xl px-4 py-4 text-sm focus:outline-none focus:border-[#2C2C2C] transition-all" />
-                          <Info size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                        </div>
-                        <input type="text" placeholder="Name on card" className="col-span-2 w-full bg-white border border-gray-200 rounded-xl px-4 py-4 text-sm focus:outline-none focus:border-[#2C2C2C] transition-all" />
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="h-[1px] bg-gray-100 mx-5"></div>
-
-                  <label className={`flex items-center justify-between p-5 cursor-pointer transition-colors ${paymentMethod === 'paypal' ? 'bg-[#FAF9F6]' : 'hover:bg-gray-50'}`}>
-                    <div className="flex items-center gap-4">
-                      <input 
-                        type="radio" 
-                        name="payment" 
-                        checked={paymentMethod === 'paypal'}
-                        onChange={() => setPaymentMethod('paypal')}
-                        className="peer appearance-none w-5 h-5 border border-gray-300 rounded-full checked:border-[#2C2C2C] checked:border-[6px] transition-all" 
-                      />
-                      <span className="text-sm font-bold italic text-blue-800">PayPal</span>
                     </div>
-                    <div className="w-8 h-5 bg-gray-100 rounded border border-gray-200"></div>
-                  </label>
+
+                    {/* UPI Options */}
+                    <div className="space-y-4">
+                      <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Pay via UPI</p>
+                      <div className="grid grid-cols-3 gap-3">
+                        <button 
+                          type="button" 
+                          onClick={() => setSelectedUpi('gpay')}
+                          className={`flex flex-col items-center justify-center gap-2 p-4 bg-white border rounded-2xl transition-all group ${selectedUpi === 'gpay' ? 'border-[#2C2C2C] bg-blue-50/30' : 'border-gray-200 hover:border-[#2C2C2C]'}`}
+                        >
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all ${selectedUpi === 'gpay' ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-600 group-hover:bg-blue-100'}`}>G</div>
+                          <span className="text-[10px] font-bold">Google Pay</span>
+                        </button>
+                        <button 
+                          type="button" 
+                          onClick={() => setSelectedUpi('phonepe')}
+                          className={`flex flex-col items-center justify-center gap-2 p-4 bg-white border rounded-2xl transition-all group ${selectedUpi === 'phonepe' ? 'border-[#2C2C2C] bg-purple-50/30' : 'border-gray-200 hover:border-[#2C2C2C]'}`}
+                        >
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all ${selectedUpi === 'phonepe' ? 'bg-purple-600 text-white' : 'bg-purple-50 text-purple-600 group-hover:bg-purple-100'}`}>P</div>
+                          <span className="text-[10px] font-bold">PhonePe</span>
+                        </button>
+                        <button 
+                          type="button" 
+                          onClick={() => setSelectedUpi('paytm')}
+                          className={`flex flex-col items-center justify-center gap-2 p-4 bg-white border rounded-2xl transition-all group ${selectedUpi === 'paytm' ? 'border-[#2C2C2C] bg-sky-50/30' : 'border-gray-200 hover:border-[#2C2C2C]'}`}
+                        >
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all ${selectedUpi === 'paytm' ? 'bg-sky-600 text-white' : 'bg-sky-50 text-sky-600 group-hover:bg-sky-100'}`}>Py</div>
+                          <span className="text-[10px] font-bold">Paytm</span>
+                        </button>
+                      </div>
+
+                      {selectedUpi && (
+                        <div className="animate-in fade-in slide-in-from-top-2 duration-300 space-y-3">
+                          <div className="relative">
+                            <input 
+                              type="text" 
+                              value={upiId}
+                              onChange={(e) => setUpiId(e.target.value)}
+                              placeholder={`Enter ${selectedUpi.toUpperCase()} Number or UPI ID`}
+                              className="w-full bg-white border border-[#2C2C2C] rounded-xl px-4 py-4 text-sm focus:outline-none transition-all"
+                            />
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                              <span className="text-[10px] font-bold text-[#2C2C2C] uppercase tracking-widest px-2 py-1 bg-[#FAF9F6] rounded-md border border-gray-100">
+                                Verify
+                              </span>
+                            </div>
+                          </div>
+                          <p className="text-[10px] text-gray-400 font-medium italic px-1">
+                            A payment request will be sent to your {selectedUpi.toUpperCase()} app.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="relative py-2">
+                      <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-gray-200"></div>
+                      </div>
+                      <div className="relative flex justify-center">
+                        <span className="bg-[#FAF9F6] px-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Or pay with card</span>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                      <div className="col-span-2 relative">
+                        <input type="text" placeholder="Card number" className="w-full bg-white border border-gray-200 rounded-xl px-4 py-4 text-sm focus:outline-none focus:border-[#2C2C2C] transition-all" />
+                        <ShieldCheck size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                      </div>
+                      <input type="text" placeholder="Expiration date (MM / YY)" className="w-full bg-white border border-gray-200 rounded-xl px-4 py-4 text-sm focus:outline-none focus:border-[#2C2C2C] transition-all" />
+                      <div className="relative">
+                        <input type="text" placeholder="Security code" className="w-full bg-white border border-gray-200 rounded-xl px-4 py-4 text-sm focus:outline-none focus:border-[#2C2C2C] transition-all" />
+                        <Info size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                      </div>
+                      <input type="text" placeholder="Name on card" className="col-span-2 w-full bg-white border border-gray-200 rounded-xl px-4 py-4 text-sm focus:outline-none focus:border-[#2C2C2C] transition-all" />
+                    </div>
+                  </div>
                 </div>
               </section>
 

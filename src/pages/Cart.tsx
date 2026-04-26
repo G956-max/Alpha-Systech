@@ -16,7 +16,7 @@ export default function Cart() {
   const [discountApplied, setDiscountApplied] = useState(false);
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const shipping = subtotal > 150 ? 0 : 15;
+  const shipping = 0;
   const taxes = subtotal * 0.08;
   const discount = discountApplied ? subtotal * 0.1 : 0;
   const total = subtotal + shipping + taxes - discount;
@@ -185,7 +185,7 @@ export default function Cart() {
                 </div>
                 <div className="flex items-center gap-3 text-xs text-gray-400 font-medium">
                   <Truck size={16} />
-                  <span>Free shipping on orders over $150</span>
+                  <span>Doorstep delivery available</span>
                 </div>
                 <div className="flex items-center gap-3 text-xs text-gray-400 font-medium">
                   <CreditCard size={16} />
