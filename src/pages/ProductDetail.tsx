@@ -61,9 +61,12 @@ export default function ProductDetail() {
   const [isHovered, setIsHovered] = useState(false);
   
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - left) / width) * 100;
-    const y = ((e.clientY - top) / height) * 100;
+    const target = e.currentTarget;
+    const rect = target.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    
+    // Smoothly update the origin
     setZoomOrigin(`${x}% ${y}%`);
     setIsHovered(true);
   };
@@ -364,7 +367,7 @@ export default function ProductDetail() {
                   transformOrigin: zoomOrigin,
                   transform: isHovered ? 'scale(2.5)' : 'scale(1)'
                 }}
-                className="w-full h-full object-cover transition-transform duration-200"
+                className="w-full h-full object-contain transition-transform duration-300 ease-out"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute top-6 right-6 flex flex-col gap-2 pointer-events-none group-hover:opacity-0 transition-opacity">
