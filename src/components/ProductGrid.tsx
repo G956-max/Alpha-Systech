@@ -96,7 +96,7 @@ export default function ProductGrid({ title, count = 12, categoryFilter, priceFi
             <Link 
               to={`/product/${product.id}`}
               key={product.id} 
-              className="group cursor-pointer flex flex-col bg-white border border-gray-100 hover:shadow-lg transition-shadow duration-300 overflow-hidden"
+              className="group cursor-pointer flex flex-col bg-white border border-gray-300 hover:shadow-lg transition-shadow duration-300 overflow-hidden"
             >
               {/* Image Area */}
               <div className="h-[200px] w-full bg-gray-50 relative shrink-0 p-4 flex items-center justify-center">

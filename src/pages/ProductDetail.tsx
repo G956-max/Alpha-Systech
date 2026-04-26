@@ -339,7 +339,7 @@ export default function ProductDetail() {
           
           {/* Left: Image Gallery */}
           <div className="w-full lg:w-1/2 space-y-4">
-            <div className="aspect-square rounded-[32px] overflow-hidden bg-white shadow-sm border border-gray-100 relative group">
+            <div className="aspect-square rounded-[32px] overflow-hidden bg-white shadow-sm border border-gray-300 relative group">
               <img 
                 src={productImages[activeImage]} 
                 alt={product.name} 

@@ -63,9 +63,9 @@ export default function Home() {
               <div 
                 key={product.id} 
                 onClick={() => navigate(`/product/${product.id}`)}
-                className="group cursor-pointer flex flex-col h-full"
+                className="group cursor-pointer flex flex-col h-full bg-white border border-gray-300 p-2 transition-all hover:shadow-md"
               >
-                <div className="relative aspect-square overflow-hidden bg-gray-100 mb-3">
+                <div className="relative aspect-square overflow-hidden bg-gray-50 mb-3 border border-gray-100">
                   <img 
                     src={product.image} 
                     alt={product.name}
