@@ -17,6 +17,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { doc, getDoc, setDoc, addDoc, collection, serverTimestamp, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import imageCompression from 'browser-image-compression';
+import { CLOUDINARY_CONFIG } from '../config/cloudinary';
 
 interface ProductForm {
   name: string;
@@ -121,10 +122,9 @@ export default function AdminAddProduct() {
 
         const formData = new FormData();
         formData.append('file', compressedBlob);
-        // FIXME: Update 'demo_cloud' and 'demo_preset' with actual Cloudinary credentials
-        formData.append('upload_preset', 'demo_preset');
+        formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
 
-        const uploadResponse = await fetch('https://api.cloudinary.com/v1_1/demo_cloud/image/upload', {
+        const uploadResponse = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/image/upload`, {
           method: 'POST',
           body: formData,
         });
@@ -388,7 +388,7 @@ export default function AdminAddProduct() {
               <div>
                 <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Price</label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">₹</span>
                   <input 
                     type="number" 
                     placeholder="0.00"
@@ -401,7 +401,7 @@ export default function AdminAddProduct() {
               <div>
                 <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Compare at price</label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">₹</span>
                   <input 
                     type="number" 
                     placeholder="0.00"

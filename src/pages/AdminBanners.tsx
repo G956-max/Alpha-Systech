@@ -3,6 +3,7 @@ import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore'
 import { db } from '../firebase';
 import { Trash2, Plus, Image as ImageIcon, Upload, Loader2, X } from 'lucide-react';
 import imageCompression from 'browser-image-compression';
+import { CLOUDINARY_CONFIG } from '../config/cloudinary';
 
 interface Banner {
   id: string;
@@ -67,10 +68,9 @@ export default function AdminBanners() {
 
       const formData = new FormData();
       formData.append('file', compressedBlob);
-      // FIXME: Update 'demo_cloud' and 'demo_preset' with actual Cloudinary credentials
-      formData.append('upload_preset', 'demo_preset');
+      formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
 
-      const uploadResponse = await fetch('https://api.cloudinary.com/v1_1/demo_cloud/image/upload', {
+      const uploadResponse = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/image/upload`, {
         method: 'POST',
         body: formData,
       });

@@ -24,6 +24,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { doc, getDoc, setDoc, collection, getDocs } from 'firebase/firestore';
 import { db, storage } from '../firebase';
 import imageCompression from 'browser-image-compression';
+import { CLOUDINARY_CONFIG } from '../config/cloudinary';
 
 type Tab = 'profile' | 'orders' | 'wishlist' | 'settings';
 
@@ -97,10 +98,9 @@ export default function UserDashboard() {
 
       const formData = new FormData();
       formData.append('file', compressedBlob);
-      // FIXME: Update 'demo_cloud' and 'demo_preset' with actual Cloudinary credentials
-      formData.append('upload_preset', 'demo_preset');
+      formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
 
-      const uploadResponse = await fetch('https://api.cloudinary.com/v1_1/demo_cloud/image/upload', {
+      const uploadResponse = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/image/upload`, {
         method: 'POST',
         body: formData,
       });
@@ -134,7 +134,7 @@ export default function UserDashboard() {
       image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=200',
       date: 'Mar 15, 2024',
       status: 'Delivered',
-      price: '$3,499.00'
+      price: '₹2,89,900'
     },
     {
       id: '#ORD-9282',
@@ -142,7 +142,7 @@ export default function UserDashboard() {
       image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=80&w=200',
       date: 'Mar 10, 2024',
       status: 'Pending',
-      price: '$1,899.00'
+      price: '₹1,54,900'
     },
     {
       id: '#ORD-9283',
@@ -150,7 +150,7 @@ export default function UserDashboard() {
       image: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&q=80&w=200',
       date: 'Feb 28, 2024',
       status: 'Cancelled',
-      price: '$1,549.00'
+      price: '₹1,24,900'
     }
   ];
 
@@ -376,7 +376,7 @@ export default function UserDashboard() {
                             <h3 className="text-lg font-serif font-bold text-[#2C2C2C] line-clamp-1">{product.name}</h3>
                             <p className="text-sm text-gray-500 mt-1">{product.category}</p>
                           </div>
-                          <p className="text-lg font-bold text-[#2C2C2C] ml-4 shrink-0">${product.price}</p>
+                          <p className="text-lg font-bold text-[#2C2C2C] ml-4 shrink-0">₹{product.price.toLocaleString()}</p>
                         </div>
                       </Link>
                     ))}
