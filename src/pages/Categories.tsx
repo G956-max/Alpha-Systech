@@ -9,7 +9,7 @@ export default function Categories() {
   const searchQuery = searchParams.get('q');
   
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [priceRange, setPriceRange] = useState<number>(5000);
+  const [priceRange, setPriceRange] = useState<number>(500000);
   const [conditions, setConditions] = useState<string[]>([]);
 
   const toggleCondition = (condition: string) => {
@@ -31,7 +31,7 @@ export default function Categories() {
 
   const clearAllFilters = () => {
     setSelectedCategory(null);
-    setPriceRange(5000);
+    setPriceRange(500000);
     setConditions([]);
   };
 
@@ -81,20 +81,20 @@ export default function Categories() {
               {/* Price Range */}
               <div className="flex-1 max-w-xs">
                 <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-3">
-                  Max Price: <span className="text-white">${priceRange}</span>
+                  Max Price: <span className="text-white">₹{priceRange.toLocaleString()}</span>
                 </p>
                 <input
                   type="range"
-                  min="100"
-                  max="5000"
-                  step="100"
+                  min="1000"
+                  max="500000"
+                  step="1000"
                   value={priceRange}
                   onChange={(e) => setPriceRange(Number(e.target.value))}
                   className="w-full h-1.5 bg-white/20 rounded-full appearance-none cursor-pointer accent-white"
                 />
                 <div className="flex justify-between text-[10px] text-gray-500 mt-1.5">
-                  <span>$100</span>
-                  <span>$5000</span>
+                  <span>₹1,000</span>
+                  <span>₹5,00,000</span>
                 </div>
               </div>
 

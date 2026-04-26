@@ -89,8 +89,8 @@ export default function Cart() {
                           </button>
                         </div>
                         <div className="text-right">
-                          <p className="text-lg font-bold text-[#2C2C2C]">${(item.price * item.quantity).toFixed(2)}</p>
-                          <p className="text-xs text-gray-400">${item.price} each</p>
+                          <p className="text-lg font-bold text-[#2C2C2C]">₹{(item.price * item.quantity).toLocaleString()}</p>
+                          <p className="text-xs text-gray-400">₹{item.price.toLocaleString()} each</p>
                         </div>
                       </div>
                     </div>
@@ -126,20 +126,20 @@ export default function Cart() {
                 <div className="space-y-3">
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal</span>
-                    <span className="font-bold text-[#2C2C2C]">${subtotal.toFixed(2)}</span>
+                    <span className="font-bold text-[#2C2C2C]">₹{subtotal.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <span>Shipping</span>
-                    <span className="font-bold text-[#2C2C2C]">{shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}</span>
+                    <span className="font-bold text-[#2C2C2C]">{shipping === 0 ? 'FREE' : `₹${shipping.toLocaleString()}`}</span>
                   </div>
                   <div className="flex justify-between text-gray-600">
-                    <span>Estimated Tax</span>
-                    <span className="font-bold text-[#2C2C2C]">${taxes.toFixed(2)}</span>
+                    <span>Estimated Tax (8%)</span>
+                    <span className="font-bold text-[#2C2C2C]">₹{taxes.toLocaleString()}</span>
                   </div>
                   {discountApplied && (
                     <div className="flex justify-between text-green-600">
                       <span>Discount (10%)</span>
-                      <span className="font-bold">-${discount.toFixed(2)}</span>
+                      <span className="font-bold">-₹{discount.toLocaleString()}</span>
                     </div>
                   )}
                 </div>
@@ -148,7 +148,7 @@ export default function Cart() {
               <div className="pt-6 border-t border-gray-100">
                 <div className="flex justify-between items-end mb-8">
                   <span className="text-lg font-serif font-bold text-[#2C2C2C]">Total</span>
-                  <span className="text-3xl font-bold text-[#2C2C2C]">${total.toFixed(2)}</span>
+                  <span className="text-3xl font-bold text-[#2C2C2C]">₹{total.toLocaleString()}</span>
                 </div>
 
                 <div className="space-y-4">

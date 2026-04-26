@@ -139,7 +139,7 @@ export default function ProductGrid({ title, count = 12, categoryFilter, priceFi
                 </h3>
                 
                 <div className="flex items-center justify-between mb-4">
-                  <p className="text-xl font-bold text-[#1a202c]">${product.price.toLocaleString()}</p>
+                  <p className="text-xl font-bold text-[#1a202c]">₹{product.price.toLocaleString()}</p>
                   <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 font-medium rounded-sm">Save</span>
                 </div>
 

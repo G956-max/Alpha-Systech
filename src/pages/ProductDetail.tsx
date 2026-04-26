@@ -414,7 +414,7 @@ export default function ProductDetail() {
                   {product.name}
                 </h1>
               </div>
-              <p className="text-3xl font-bold text-[#2C2C2C]">${product.price}</p>
+              <p className="text-3xl font-bold text-[#2C2C2C]">₹{product.price.toLocaleString()}</p>
               <p className="text-gray-600 leading-relaxed text-lg">
                 {product.description}
               </p>

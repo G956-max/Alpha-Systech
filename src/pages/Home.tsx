@@ -72,7 +72,7 @@ export default function Home() {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-1.5 py-0.5 text-[10px] font-bold text-[#1a202c]">
-                    ${product.price}
+                    ₹{product.price.toLocaleString()}
                   </div>
                 </div>
                 <div className="flex flex-col flex-grow">

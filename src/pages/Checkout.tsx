@@ -38,7 +38,7 @@ export default function Checkout() {
     {
       id: '1',
       name: 'MacBook Pro M3 Max',
-      price: 3499,
+      price: 289900,
       category: 'Apple',
       variant: '14-inch, Space Black',
       imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=800',
@@ -381,7 +381,7 @@ export default function Checkout() {
                       <h4 className="text-sm font-bold text-[#2C2C2C]">{item.name}</h4>
                       <p className="text-xs text-gray-500">{item.variant}</p>
                     </div>
-                    <span className="text-sm font-bold text-[#2C2C2C]">${(item.price * item.quantity).toFixed(2)}</span>
+                    <span className="text-sm font-bold text-[#2C2C2C]">₹{(item.price * item.quantity).toLocaleString()}</span>
                   </div>
                 ))}
               </div>
@@ -407,31 +407,31 @@ export default function Checkout() {
               <div className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-bold">${subtotal.toFixed(2)}</span>
+                  <span className="font-bold">₹{subtotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Shipping</span>
-                  <span className="font-bold">${shippingCost.toFixed(2)}</span>
+                  <span className="font-bold">₹{shippingCost.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Estimated taxes</span>
-                  <span className="font-bold">${taxes.toFixed(2)}</span>
+                  <span className="font-bold">₹{taxes.toLocaleString()}</span>
                 </div>
                 {discountApplied && (
                   <div className="flex justify-between text-sm text-green-600">
                     <span>Discount (10%)</span>
-                    <span className="font-bold">-${discount.toFixed(2)}</span>
+                    <span className="font-bold">-₹{discount.toLocaleString()}</span>
                   </div>
                 )}
                 
                 <div className="flex justify-between items-end pt-4">
                   <div className="space-y-0.5">
                     <span className="text-lg font-serif font-bold">Total</span>
-                    <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Including ${taxes.toFixed(2)} in taxes</p>
+                    <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Including ₹{taxes.toLocaleString()} in taxes</p>
                   </div>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-xs text-gray-400 font-medium uppercase">USD</span>
-                    <span className="text-2xl font-bold tracking-tight">${total.toFixed(2)}</span>
+                    <span className="text-xs text-gray-400 font-medium uppercase">INR</span>
+                    <span className="text-2xl font-bold tracking-tight">₹{total.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
