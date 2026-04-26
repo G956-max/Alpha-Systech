@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import ProductGrid from '../components/ProductGrid';
 import { Laptop, Cpu, MemoryStick, HardDrive, X } from 'lucide-react';
 
 export default function Categories() {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const searchQuery = searchParams.get('q');
+  
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [priceRange, setPriceRange] = useState<number>(5000);
   const [conditions, setConditions] = useState<string[]>([]);
@@ -36,9 +41,13 @@ export default function Categories() {
       <div className="bg-[#1a202c] text-white pb-10 pt-20 mb-10">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           {/* Title */}
-          <h1 className="text-3xl md:text-4xl font-bold mb-2 tracking-tight">Technical Categories</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2 tracking-tight">
+            {searchQuery ? `Search results for "${searchQuery}"` : 'Technical Categories'}
+          </h1>
           <p className="text-gray-400 max-w-2xl text-sm md:text-base leading-relaxed mb-8">
-            Browse our specialized inventory organized by performance tier and hardware architecture.
+            {searchQuery 
+              ? `Found products matching your search criteria.`
+              : 'Browse our specialized inventory organized by performance tier and hardware architecture.'}
           </p>
 
           {/* Filter Options — inside the banner */}
@@ -135,6 +144,7 @@ export default function Categories() {
           categoryFilter={selectedCategory}
           priceFilter={priceRange}
           conditionFilter={conditions}
+          searchFilter={searchQuery}
         />
       </div>
     </div>

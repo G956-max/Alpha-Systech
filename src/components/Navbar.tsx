@@ -15,6 +15,7 @@ export default function Navbar() {
   const location = useLocation();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const isLoginActive = location.pathname === '/login';
 
@@ -29,6 +30,13 @@ export default function Navbar() {
   const handleLogoutConfirm = () => {
     logout();
     navigate('/');
+  };
+
+  const handleSearch = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      navigate(`/categories?q=${encodeURIComponent(searchQuery.trim())}`);
+      setIsMobileMenuOpen(false);
+    }
   };
 
   return (
@@ -73,6 +81,9 @@ export default function Navbar() {
                 <input 
                   type="text" 
                   placeholder="Search for Laptops..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleSearch}
                   className="bg-gray-50 border border-gray-200 text-sm rounded-md pl-4 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-gray-300 w-64"
                 />
                 <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -145,6 +156,9 @@ export default function Navbar() {
                     <input 
                       type="text" 
                       placeholder="Search for Laptops..." 
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyDown={handleSearch}
                       className="w-full bg-gray-50 border border-gray-100 text-sm rounded-xl pl-4 pr-10 py-3 focus:outline-none"
                     />
                     <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />

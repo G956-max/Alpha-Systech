@@ -11,6 +11,7 @@ interface ProductGridProps {
   categoryFilter?: string | null;
   priceFilter?: number;
   conditionFilter?: string[];
+  searchFilter?: string | null;
 }
 
 interface FirebaseProduct {
@@ -22,7 +23,7 @@ interface FirebaseProduct {
   status?: string;
 }
 
-export default function ProductGrid({ title, count = 12, categoryFilter, priceFilter, conditionFilter }: ProductGridProps) {
+export default function ProductGrid({ title, count = 12, categoryFilter, priceFilter, conditionFilter, searchFilter }: ProductGridProps) {
   const [products, setProducts] = useState<FirebaseProduct[] | MockProduct[]>([]);
   const requireAuth = useRequireAuth();
 
@@ -62,6 +63,14 @@ export default function ProductGrid({ title, count = 12, categoryFilter, priceFi
           });
         }
 
+        if (searchFilter) {
+          const query = searchFilter.toLowerCase();
+          publishedProducts = publishedProducts.filter(p => 
+            p.name.toLowerCase().includes(query) || 
+            (p.category && p.category.toLowerCase().includes(query))
+          );
+        }
+
         setProducts(publishedProducts.slice(0, count || 12));
       } catch (err) {
         console.error("Error fetching products:", err);
@@ -69,7 +78,7 @@ export default function ProductGrid({ title, count = 12, categoryFilter, priceFi
       }
     };
     fetchProducts();
-  }, [count, categoryFilter, priceFilter, conditionFilter]);
+  }, [count, categoryFilter, priceFilter, conditionFilter, searchFilter]);
 
   return (
     <section className="w-full">
