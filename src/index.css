@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-navy: #0F172A;
+  --color-orange-accent: #F97316;
+  --color-alpha-grey: #F8FAFC;
+  --color-alpha-border: #E2E8F0;
+}
+
+@layer base {
+  body {
+    @apply bg-white text-navy font-sans antialiased font-normal leading-relaxed;
+  }
+  
+  h1 {
+    @apply font-display tracking-tight text-navy;
+  }
+
+  h2, h3, h4, h5, h6 {
+    @apply font-sans tracking-tight text-navy;
+  }
+}
+
+@layer utilities {
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.premium-card {
+  @apply bg-white border border-alpha-border rounded-[16px] shadow-sm transition-all duration-500 hover:shadow-xl hover:-translate-y-1 overflow-hidden;
+}
+
+.btn-primary {
+  @apply bg-orange-accent text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 hover:opacity-90 hover:shadow-lg active:scale-95 text-sm;
+}
+
+.btn-secondary {
+  @apply bg-white text-navy border border-alpha-border px-8 py-3 rounded-full font-semibold transition-all duration-300 hover:bg-alpha-grey active:scale-95 text-sm;
+}
+
+.section-padding {
+  @apply py-24 md:py-32 px-6 md:px-12;
+}
