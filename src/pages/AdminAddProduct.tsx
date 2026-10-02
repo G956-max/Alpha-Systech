@@ -29,9 +29,9 @@ interface ProductForm {
   imageUrl: string;
   images: string[];
   specs?: {
-    ram: string;
-    storage: string;
-    processor: string;
+    fabric: string;
+    bundleMOQ: string;
+    cutOrLength: string;
   };
 }
 
@@ -45,9 +45,9 @@ const initialForm: ProductForm = {
   imageUrl: '',
   images: [],
   specs: {
-    ram: '',
-    storage: '',
-    processor: '',
+    fabric: '',
+    bundleMOQ: '',
+    cutOrLength: '',
   }
 };
 
@@ -414,37 +414,37 @@ export default function AdminAddProduct() {
             </div>
           </div>
 
-          {/* Technical Specifications */}
+          {/* Textile Specifications */}
           <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-            <label className="block text-sm font-bold text-gray-700 mb-4">Technical Specifications</label>
+            <label className="block text-sm font-bold text-gray-700 mb-4">Textile &amp; Wholesale Specifications</label>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">RAM</label>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Fabric / Material</label>
                 <input 
                   type="text" 
-                  placeholder="e.g. 16GB DDR4"
-                  value={form.specs?.ram}
-                  onChange={(e) => setForm({ ...form, specs: { ...form.specs!, ram: e.target.value } })}
+                  placeholder="e.g. Pure Cotton / Soft Silk"
+                  value={form.specs?.fabric}
+                  onChange={(e) => setForm({ ...form, specs: { ...form.specs!, fabric: e.target.value } })}
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1a202c]/10 outline-none"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Storage</label>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Bundle MOQ / Lot Size</label>
                 <input 
                   type="text" 
-                  placeholder="e.g. 512GB NVMe SSD"
-                  value={form.specs?.storage}
-                  onChange={(e) => setForm({ ...form, specs: { ...form.specs!, storage: e.target.value } })}
+                  placeholder="e.g. 10 Pcs Bundle / 20 Pcs Box"
+                  value={form.specs?.bundleMOQ}
+                  onChange={(e) => setForm({ ...form, specs: { ...form.specs!, bundleMOQ: e.target.value } })}
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1a202c]/10 outline-none"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Processor</label>
+                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Cut / Length / Size</label>
                 <input 
                   type="text" 
-                  placeholder="e.g. Intel Core i7"
-                  value={form.specs?.processor}
-                  onChange={(e) => setForm({ ...form, specs: { ...form.specs!, processor: e.target.value } })}
+                  placeholder="e.g. 6.3m with Blouse / 38-44 / Free Size"
+                  value={form.specs?.cutOrLength}
+                  onChange={(e) => setForm({ ...form, specs: { ...form.specs!, cutOrLength: e.target.value } })}
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1a202c]/10 outline-none"
                 />
               </div>
@@ -480,18 +480,21 @@ export default function AdminAddProduct() {
               <input 
                 type="text" 
                 list="category-suggestions"
-                placeholder="e.g. Gaming Laptops (Select or type new)"
+                placeholder="e.g. Sarees (Select or type new)"
                 value={form.category}
                 onChange={(e) => setForm({ ...form, category: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-[#1a202c]/10 focus:border-[#1a202c] outline-none transition-all"
               />
               <datalist id="category-suggestions">
-                <option value="Windows Laptops" />
-                <option value="MacBooks" />
-                <option value="Gaming Laptops" />
-                <option value="Workstations" />
-                <option value="Ultrabooks" />
-                <option value="Accessories" />
+                <option value="Sarees" />
+                <option value="Nighties" />
+                <option value="Inskirts" />
+                <option value="Blouses" />
+                <option value="Lungis" />
+                <option value="Readymade Churidars" />
+                <option value="Tops & Kurtis" />
+                <option value="Vetti & Sattai" />
+                <option value="Innerwears & Linings" />
                 {availableCategories.map((cat, idx) => (
                   <option key={idx} value={cat} />
                 ))}

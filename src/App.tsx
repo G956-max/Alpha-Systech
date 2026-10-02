@@ -24,12 +24,11 @@ import UserDashboard from './pages/UserDashboard';
 import Profile from './pages/Profile';
 import ProductDetail from './pages/ProductDetail';
 import AdminBanners from './pages/AdminBanners';
-import Checkout from './pages/Checkout';
-import Cart from './pages/Cart';
 import Wishlist from './pages/Wishlist';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import FloatingWhatsAppCall from './components/FloatingWhatsAppCall';
 import ErrorBoundary from './components/ErrorBoundary';
 import AdminLayout from './components/AdminLayout';
 import CategoryProducts from './pages/CategoryProducts';
@@ -43,26 +42,12 @@ const ProtectedAdminRoute = ({ children }: { children: React.ReactNode }) => {
   return <AdminLayout>{children}</AdminLayout>;
 };
 
-const ProtectedUserRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
-  
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-[#FAF9F6]">Loading...</div>;
-  if (!user) return <Navigate to="/login" replace />;
-  
-  return <PublicLayout>{children}</PublicLayout>;
-};
-
 const PublicLayout = ({ children }: { children: React.ReactNode }) => (
-  <div className="h-auto flex flex-col font-sans bg-[#FAF9F6] text-[#2C2C2C] m-0 p-0">
+  <div className="h-auto flex flex-col font-sans bg-[#FAF9F6] text-[#2C2C2C] m-0 p-0 relative">
     <Navbar />
     <main className="flex-grow">{children}</main>
     <Footer />
-  </div>
-);
-
-const CheckoutLayout = ({ children }: { children: React.ReactNode }) => (
-  <div className="h-auto flex flex-col font-sans bg-[#FAF9F6] text-[#2C2C2C] m-0 p-0">
-    <main className="flex-grow">{children}</main>
+    <FloatingWhatsAppCall />
   </div>
 );
 
@@ -73,21 +58,22 @@ export default function App() {
         <StoreProvider>
           <BrowserRouter>
             <Routes>
-            {/* Public Routes - Alpha Systech UI with Navbar & Footer */}
+            {/* Public Routes - Sri Aadhi Nayaga Tex Wholesale Textile & Saree Market */}
             <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
             <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
-
             
-            {/* Protected Store Routes */}
-            <Route path="/categories" element={<ProtectedUserRoute><Categories /></ProtectedUserRoute>} />
-            <Route path="/category/:categoryName" element={<ProtectedUserRoute><CategoryProducts /></ProtectedUserRoute>} />
-            <Route path="/contact" element={<ProtectedUserRoute><Contact /></ProtectedUserRoute>} />
-            <Route path="/profile" element={<ProtectedUserRoute><Profile /></ProtectedUserRoute>} />
-            <Route path="/dashboard" element={<ProtectedUserRoute><UserDashboard /></ProtectedUserRoute>} />
-            <Route path="/product/:id" element={<ProtectedUserRoute><ProductDetail /></ProtectedUserRoute>} />
-            <Route path="/checkout" element={<ProtectedUserRoute><CheckoutLayout><Checkout /></CheckoutLayout></ProtectedUserRoute>} />
-            <Route path="/cart" element={<ProtectedUserRoute><Cart /></ProtectedUserRoute>} />
-            <Route path="/wishlist" element={<ProtectedUserRoute><Wishlist /></ProtectedUserRoute>} />
+            {/* Open Store Routes - Accessible without login (WhatsApp & Call Orders Only) */}
+            <Route path="/categories" element={<PublicLayout><Categories /></PublicLayout>} />
+            <Route path="/category/:categoryName" element={<PublicLayout><CategoryProducts /></PublicLayout>} />
+            <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
+            <Route path="/profile" element={<PublicLayout><Profile /></PublicLayout>} />
+            <Route path="/dashboard" element={<PublicLayout><UserDashboard /></PublicLayout>} />
+            <Route path="/product/:id" element={<PublicLayout><ProductDetail /></PublicLayout>} />
+            <Route path="/wishlist" element={<PublicLayout><Wishlist /></PublicLayout>} />
+
+            {/* Online ordering disabled - Redirect directly to WhatsApp Enquiry & Shop Desk */}
+            <Route path="/checkout" element={<Navigate to="/contact" replace />} />
+            <Route path="/cart" element={<Navigate to="/contact" replace />} />
 
             {/* Admin Routes - Modern Dashboard UI with Sidebar & Topbar (NO Footer) */}
             <Route path="/admin" element={<ProtectedAdminRoute><AdminDashboard /></ProtectedAdminRoute>} />

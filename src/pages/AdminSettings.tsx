@@ -5,11 +5,11 @@ import { Save, Store, DollarSign } from 'lucide-react';
 
 export default function AdminSettings() {
   const [settings, setSettings] = useState({
-    storeName: 'Alpha Systech',
-    contactEmail: 'hello@alphasystech.com',
-    currency: 'USD',
-    taxRate: 0,
-    freeShippingThreshold: 100,
+    storeName: 'Sri Aadhi Nayaga Tex',
+    contactEmail: 'orders@sriaadhinayagatex.com',
+    currency: 'INR',
+    taxRate: 5,
+    freeShippingThreshold: 5000,
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });

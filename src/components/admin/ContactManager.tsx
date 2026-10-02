@@ -202,7 +202,7 @@ export default function ContactManager() {
               value={formData.value}
               onChange={(e) => setFormData({ ...formData, value: e.target.value })}
               className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-              placeholder="e.g., support@alphasystech.com or +1 234 567 890"
+              placeholder="e.g., 9655147000 or orders@sriaadhinayagatex.com"
             />
           </div>
           <div>

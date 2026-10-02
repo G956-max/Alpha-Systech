@@ -109,7 +109,7 @@ export default function AdminAnalytics() {
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} dy={10} />
                   <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
                   <Tooltip 
-                    formatter={(value: number) => [`$${value.toFixed(2)}`, 'Revenue']}
+                    formatter={(value: number) => [`₹${value.toLocaleString()}`, 'Revenue']}
                     contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
                   />
                   <Line type="monotone" dataKey="sales" stroke="#2C2C2C" strokeWidth={3} dot={{ r: 4, strokeWidth: 2 }} activeDot={{ r: 6 }} />
@@ -128,7 +128,7 @@ export default function AdminAnalytics() {
                   <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 12 }} />
                   <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: '#4B5563', fontSize: 12, fontWeight: 500 }} />
                   <Tooltip 
-                    formatter={(value: number) => [`$${value.toFixed(2)}`, 'Revenue']}
+                    formatter={(value: number) => [`₹${value.toLocaleString()}`, 'Revenue']}
                     cursor={{ fill: '#F9FAFB' }}
                     contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
                   />

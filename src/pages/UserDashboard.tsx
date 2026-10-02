@@ -71,7 +71,6 @@ export default function UserDashboard() {
   }, []);
 
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-[#FAF9F6]">Loading...</div>;
-  if (!user) return <Navigate to="/login" replace />;
 
   const handleLogout = async () => {
     await logout();
@@ -130,27 +129,27 @@ export default function UserDashboard() {
   const orders = [
     {
       id: '#ORD-9281',
-      product: 'MacBook Pro M3 Max',
-      image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=200',
-      date: 'Mar 15, 2024',
+      product: 'Erode Soft Silk Saree Bale (10 Sarees Assorted)',
+      image: 'https://images.unsplash.com/photo-1610030469668-93510cb07707?auto=format&fit=crop&q=80&w=200',
+      date: 'Oct 15, 2024',
       status: 'Delivered',
-      price: '₹2,89,900'
+      price: '₹14,500'
     },
     {
       id: '#ORD-9282',
-      product: 'Dell XPS 15 9530',
-      image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=80&w=200',
-      date: 'Mar 10, 2024',
+      product: 'Alpine Pure Cotton Nighties Bundle (20 Pcs)',
+      image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=200',
+      date: 'Oct 10, 2024',
       status: 'Pending',
-      price: '₹1,54,900'
+      price: '₹5,600'
     },
     {
       id: '#ORD-9283',
-      product: 'ThinkPad X1 Carbon',
-      image: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&q=80&w=200',
-      date: 'Feb 28, 2024',
-      status: 'Cancelled',
-      price: '₹1,24,900'
+      product: 'Erode Handloom Cotton Check Lungis Bale (25 Pcs)',
+      image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&q=80&w=200',
+      date: 'Sep 28, 2024',
+      status: 'Delivered',
+      price: '₹4,750'
     }
   ];
 
@@ -170,7 +169,7 @@ export default function UserDashboard() {
                     ) : profileImage ? (
                       <img src={profileImage} alt="Profile" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                     ) : (
-                      user.email?.[0].toUpperCase()
+                      user?.email?.[0]?.toUpperCase() || 'S'
                     )}
                   </div>
                   <input 
@@ -189,9 +188,9 @@ export default function UserDashboard() {
                   </button>
                 </div>
                 <h2 className="text-xl font-serif font-bold text-[#2C2C2C] truncate">
-                  {user.displayName || user.email?.split('@')[0]}
+                  {user?.displayName || user?.email?.split('@')[0] || 'Wholesale Client'}
                 </h2>
-                <p className="text-sm text-gray-500 truncate">{user.email}</p>
+                <p className="text-sm text-gray-500 truncate">{user?.email || 'guest@sriaadhinayagatex.com'}</p>
               </div>
               
               <nav className="p-4">
@@ -345,7 +344,7 @@ export default function UserDashboard() {
                   <div className="flex justify-between items-end">
                     <div>
                       <h1 className="text-3xl font-serif font-bold text-[#2C2C2C] mb-2">Available Products</h1>
-                      <p className="text-gray-500">Discover all Alpha Systech hardware.</p>
+                      <p className="text-gray-500">Discover Sri Aadhi Nayaga Tex sarees &amp; textiles.</p>
                     </div>
                     <button className="text-sm font-bold text-red-500 hover:text-red-700 flex items-center gap-2 mb-1">
                       <Trash2 size={16} />
@@ -403,7 +402,7 @@ export default function UserDashboard() {
                           <label className="text-sm font-bold text-[#2C2C2C]">Display Name</label>
                           <input 
                             type="text" 
-                            defaultValue={user.displayName || ''}
+                            defaultValue={user?.displayName || 'Wholesale Client'}
                             className="w-full px-5 py-3 bg-[#FAF9F6] border-none rounded-2xl focus:ring-2 focus:ring-black/5 outline-none transition-all"
                             placeholder="Your Name"
                           />
@@ -412,7 +411,7 @@ export default function UserDashboard() {
                           <label className="text-sm font-bold text-[#2C2C2C]">Email Address</label>
                           <input 
                             type="email" 
-                            defaultValue={user.email || ''}
+                            defaultValue={user?.email || 'guest@sriaadhinayagatex.com'}
                             disabled
                             className="w-full px-5 py-3 bg-[#FAF9F6] border-none rounded-2xl opacity-60 cursor-not-allowed"
                           />

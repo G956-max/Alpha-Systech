@@ -77,7 +77,7 @@ export default function AdminDashboard() {
         customer: o.customerName || o.customerEmail || 'Unknown',
         date: o.createdAt?.toDate ? o.createdAt.toDate().toLocaleDateString() : 'Just now',
         status: o.status || 'Processing',
-        amount: `$${(o.total || 0).toFixed(2)}`
+        amount: `₹${(o.total || 0).toLocaleString()}`
       })));
 
       // Chart Data
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard 
           title="Total Revenue" 
-          value={`$${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} 
+          value={`₹${totalRevenue.toLocaleString()}`} 
           trend="+20.1%" 
           isUp={true} 
           icon={DollarSign} 
@@ -198,7 +198,7 @@ export default function AdminDashboard() {
                 <Tooltip 
                   cursor={{ fill: '#FAF9F6' }}
                   contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
-                  formatter={(value: number) => [`$${value.toFixed(2)}`, 'Revenue']}
+                  formatter={(value: number) => [`₹${value.toLocaleString()}`, 'Revenue']}
                 />
                 <Bar dataKey="revenue" radius={[4, 4, 0, 0]}>
                   {chartData.map((entry, index) => (

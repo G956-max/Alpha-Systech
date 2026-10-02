@@ -26,7 +26,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Standard Admin ID
-const ADMIN_EMAIL = 'admin@alphasystech.com';
+const ADMIN_EMAIL = 'admin@sriaadhinayagatex.com';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(currentUser);
       if (currentUser) {
         // Admin check based on standard ID
-        const adminEmails = ['admin@alphasystech.com', 'gopinathsumathi05@gmail.com', 'admin@21gmail.com'];
+        const adminEmails = ['admin@sriaadhinayagatex.com', 'admin@alphasystech.com', 'gopinathsumathi05@gmail.com', 'admin@21gmail.com'];
         if (adminEmails.includes(currentUser.email || '')) {
           setRole('admin');
         } else {
@@ -53,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loginAdmin = async (email: string, password: string) => {
-    const adminEmails = ['admin@alphasystech.com', 'gopinathsumathi05@gmail.com', 'admin@21gmail.com'];
+    const adminEmails = ['admin@sriaadhinayagatex.com', 'admin@alphasystech.com', 'gopinathsumathi05@gmail.com', 'admin@21gmail.com'];
     if (!adminEmails.includes(email)) {
       throw new Error('Unauthorized: Only the standard admin ID can login here.');
     }

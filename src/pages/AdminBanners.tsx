@@ -228,7 +228,7 @@ export default function AdminBanners() {
                 type="text"
                 value={newBanner.title}
                 onChange={(e) => setNewBanner({ ...newBanner, title: e.target.value })}
-                placeholder="Alpha Systech Laptops (Optional)"
+                placeholder="Sri Aadhi Nayaga Tex Sarees & Textiles (Optional)"
                 className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#2C2C2C]/20 focus:border-[#2C2C2C]"
               />
             </div>
@@ -237,7 +237,7 @@ export default function AdminBanners() {
               <textarea
                 value={newBanner.subtitle}
                 onChange={(e) => setNewBanner({ ...newBanner, subtitle: e.target.value })}
-                placeholder="Elevate your dining experience... (Optional)"
+                placeholder="Erode wholesale market prices with direct WhatsApp booking... (Optional)"
                 rows={2}
                 className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#2C2C2C]/20 focus:border-[#2C2C2C] resize-none"
               />

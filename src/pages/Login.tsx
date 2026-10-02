@@ -29,7 +29,7 @@ export default function Login() {
         }
         
         // Check if admin login
-        if (email === 'admin@alphasystech.com' || email === 'gopinathsumathi05@gmail.com') {
+        if (email === 'admin@sriaadhinayagatex.com' || email === 'admin@alphasystech.com' || email === 'gopinathsumathi05@gmail.com') {
           await loginAdmin(email, password);
           navigate('/admin');
         } else {
@@ -75,7 +75,7 @@ export default function Login() {
                 {userMode === 'login' ? 'Welcome Back' : 'Create Account'}
               </h2>
               <p className="text-gray-500 mt-2">
-                {userMode === 'login' ? 'Sign in with your email or phone.' : 'Join us to discover Alpha Systech hardware.'}
+                {userMode === 'login' ? 'Sign in with your email to access wholesale rates.' : 'Join us to explore Sri Aadhi Nayaga Tex wholesale & retail collection.'}
               </p>
             </motion.div>
           </AnimatePresence>

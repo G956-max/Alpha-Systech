@@ -155,7 +155,7 @@ function ProfileTab() {
             <MapPin className="w-4 h-4 mr-2" />
             <span className="text-sm font-medium">Location</span>
           </div>
-          <p className="text-gray-900 font-medium">New York, USA</p>
+          <p className="text-gray-900 font-medium">Erode, Tamil Nadu</p>
         </div>
       </div>
     </div>
@@ -166,27 +166,27 @@ function OrdersTab() {
   const orders = [
     {
       id: 'ORD-84392',
-      product: 'MacBook Pro M3 Max',
-      date: 'Oct 24, 2023',
-      price: '$3,499.00',
+      product: 'Erode Soft Silk Saree Bale (10 Sarees Assorted)',
+      date: 'Oct 24, 2024',
+      price: '₹14,500',
       status: 'Delivered',
-      image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80',
+      image: 'https://images.unsplash.com/photo-1610030469668-93510cb07707?w=500&q=80',
     },
     {
       id: 'ORD-73218',
-      product: 'Dell XPS 15 9530',
-      date: 'Nov 12, 2023',
-      price: '$1,899.00',
+      product: 'Alpine Pure Cotton Nighties Bundle (20 Pcs)',
+      date: 'Nov 12, 2024',
+      price: '₹5,600',
       status: 'Pending',
-      image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=500&q=80',
+      image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500&q=80',
     },
     {
       id: 'ORD-65421',
-      product: 'ThinkPad X1 Carbon',
-      date: 'Dec 05, 2023',
-      price: '$1,549.00',
-      status: 'Cancelled',
-      image: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=500&q=80',
+      product: 'Erode Handloom Cotton Check Lungis Bale (25 Pcs)',
+      date: 'Dec 05, 2024',
+      price: '₹4,750',
+      status: 'Delivered',
+      image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500&q=80',
     },
   ];
 
@@ -205,7 +205,7 @@ function OrdersTab() {
 
   return (
     <div className="bg-white rounded-2xl shadow-sm p-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">My Orders</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">Wholesale Consignment Orders</h2>
       
       <div className="space-y-4">
         {orders.map((order) => (
@@ -243,30 +243,30 @@ function WishlistTab() {
   const wishlistItems = [
     {
       id: 1,
-      name: 'MacBook Pro M3 Max',
+      name: 'MacBook Air M2 (3 Units)',
       category: 'Apple',
-      price: '$3,499.00',
+      price: '₹1,87,500',
       image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80',
     },
     {
       id: 2,
-      name: 'Dell XPS 15 9530',
+      name: 'Dell Latitude 5420 (5 Units)',
       category: 'Dell',
-      price: '$1,899.00',
+      price: '₹1,12,500',
       image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=500&q=80',
     },
     {
       id: 3,
-      name: 'ASUS ROG Zephyrus G14',
+      name: 'ASUS ROG Strix G15 (3 Units)',
       category: 'ASUS',
-      price: '$1,699.00',
+      price: '₹1,75,500',
       image: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=500&q=80',
     },
     {
       id: 4,
-      name: 'ThinkPad X1 Carbon Gen 11',
+      name: 'ThinkPad T14 Gen 2 (5 Units)',
       category: 'Lenovo',
-      price: '$1,549.00',
+      price: '₹1,42,500',
       image: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=500&q=80',
     }
   ];

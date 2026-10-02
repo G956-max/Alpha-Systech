@@ -1,169 +1,262 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Product as MockProduct, getRandomProducts } from '../data/products';
-import { useRequireAuth } from '../hooks/useRequireAuth';
+import { Link, useNavigate } from 'react-router-dom';
+import { Product as MockProduct, allProducts } from '../data/products';
+import { useStore } from '../context/StoreContext';
 import { collection, getDocs } from 'firebase/firestore';
-import { auth, db, handleFirestoreError, OperationType } from '../firebase';
+import { db } from '../firebase';
+import { ShoppingBag, Heart, Sparkles, Package, MessageCircle, PhoneCall } from 'lucide-react';
 
 interface ProductGridProps {
   title?: string;
   count?: number;
   categoryFilter?: string | null;
   priceFilter?: number;
-  conditionFilter?: string[];
+  fabricFilter?: string[];
   searchFilter?: string | null;
+  sizeFilter?: string | null;
 }
 
-interface FirebaseProduct {
-  id: string;
-  name: string;
-  price: number;
-  category: string;
-  imageUrl: string;
-  status?: string;
-}
-
-export default function ProductGrid({ title, count = 12, categoryFilter, priceFilter, conditionFilter, searchFilter }: ProductGridProps) {
-  const [products, setProducts] = useState<FirebaseProduct[] | MockProduct[]>([]);
-  const requireAuth = useRequireAuth();
+export default function ProductGrid({ 
+  title, 
+  count = 16, 
+  categoryFilter, 
+  priceFilter, 
+  fabricFilter, 
+  searchFilter,
+  sizeFilter
+}: ProductGridProps) {
+  const [products, setProducts] = useState<MockProduct[]>([]);
+  const { toggleWishlist, isInWishlist } = useStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'products'));
-        const productsList = querySnapshot.docs.map(doc => ({
+        const firebaseProducts = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
-        })) as FirebaseProduct[];
+        })) as any[];
         
-        let publishedProducts = productsList.filter(p => p.status === 'published' || !p.status);
+        let publishedProducts = firebaseProducts.filter(p => p.status === 'published' || !p.status);
         
-        if (publishedProducts.length === 0) {
-          publishedProducts = getRandomProducts(count || 12);
+        let combinedProducts: MockProduct[] = [];
+        if (publishedProducts.length > 0) {
+          combinedProducts = publishedProducts.map(fp => {
+            const matchMock = allProducts.find(p => p.id === fp.id || p.name.toLowerCase() === fp.name.toLowerCase());
+            return {
+              id: fp.id,
+              name: fp.name,
+              brand: fp.brand || matchMock?.brand || 'Vastra',
+              category: fp.category || matchMock?.category || 'Women',
+              image: fp.imageUrl || fp.image || matchMock?.image || 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800',
+              images: fp.images || matchMock?.images || [fp.imageUrl || fp.image],
+              price: fp.price || matchMock?.price || 2499,
+              wholesalePrice: fp.wholesalePrice || matchMock?.wholesalePrice || 1650,
+              retailPrice: fp.retailPrice || matchMock?.retailPrice || 4999,
+              fabric: fp.fabric || matchMock?.fabric || 'Pure Silk',
+              sizes: fp.sizes || matchMock?.sizes || ['S', 'M', 'L', 'XL'],
+              colors: fp.colors || matchMock?.colors || ['Red', 'Blue'],
+              occasion: fp.occasion || matchMock?.occasion || 'Festive',
+              inStock: fp.inStock !== false,
+              isBestseller: fp.isBestseller || matchMock?.isBestseller,
+              isNewArrival: fp.isNewArrival || matchMock?.isNewArrival,
+              bundleQuantity: fp.bundleQuantity || matchMock?.bundleQuantity || 4,
+              description: fp.description || matchMock?.description || 'Authentic designer outfit.',
+              washCare: fp.washCare || matchMock?.washCare || 'Dry Clean Only.'
+            };
+          });
+        } else {
+          combinedProducts = allProducts;
         }
 
+        // Filters
         if (categoryFilter) {
-          if (categoryFilter.toLowerCase() === 'laptops') {
-            const laptopBrands = ['apple', 'dell', 'lenovo', 'hp', 'asus', 'razer', 'microsoft', 'gigabyte'];
-            publishedProducts = publishedProducts.filter(p => p.category && laptopBrands.includes(p.category.toLowerCase()));
-          } else {
-            publishedProducts = publishedProducts.filter(p => p.category && p.category.toLowerCase().includes(categoryFilter.toLowerCase()));
-          }
+          const cat = categoryFilter.toLowerCase();
+          combinedProducts = combinedProducts.filter(p => 
+            p.category.toLowerCase().includes(cat) ||
+            p.brand.toLowerCase().includes(cat) ||
+            p.name.toLowerCase().includes(cat)
+          );
         }
         
         if (priceFilter) {
-          publishedProducts = publishedProducts.filter(p => p.price <= priceFilter);
+          combinedProducts = combinedProducts.filter(p => p.price <= priceFilter);
         }
         
-        if (conditionFilter && conditionFilter.length > 0) {
-          publishedProducts = publishedProducts.filter(p => {
-             const isRefurbished = p.id.charCodeAt(0) % 2 === 0;
-             const condition = isRefurbished ? 'Refurbished' : 'Brand New';
-             return conditionFilter.includes(condition);
+        if (fabricFilter && fabricFilter.length > 0) {
+          combinedProducts = combinedProducts.filter(p => {
+            return fabricFilter.some(fab => p.fabric.toLowerCase().includes(fab.toLowerCase()));
           });
+        }
+
+        if (sizeFilter) {
+          combinedProducts = combinedProducts.filter(p => 
+            p.sizes.some(s => s.toLowerCase().includes(sizeFilter.toLowerCase()))
+          );
         }
 
         if (searchFilter) {
           const query = searchFilter.toLowerCase();
-          publishedProducts = publishedProducts.filter(p => 
+          combinedProducts = combinedProducts.filter(p => 
             p.name.toLowerCase().includes(query) || 
-            (p.category && p.category.toLowerCase().includes(query))
+            p.fabric.toLowerCase().includes(query) ||
+            p.category.toLowerCase().includes(query) ||
+            p.occasion.toLowerCase().includes(query)
           );
         }
 
-        setProducts(publishedProducts.slice(0, count || 12));
+        setProducts(combinedProducts.slice(0, count || 20));
       } catch (err) {
-        console.error("Error fetching products:", err);
-        setProducts(getRandomProducts(count));
+        console.error("Error fetching dress products:", err);
+        setProducts(allProducts.slice(0, count || 20));
       }
     };
     fetchProducts();
-  }, [count, categoryFilter, priceFilter, conditionFilter, searchFilter]);
+  }, [count, categoryFilter, priceFilter, fabricFilter, searchFilter, sizeFilter]);
+
+
+  const handleWishlistClick = (e: React.MouseEvent, dress: MockProduct) => {
+    e.stopPropagation();
+    toggleWishlist({
+      id: dress.id,
+      name: dress.name,
+      price: dress.price,
+      category: dress.category,
+      imageUrl: dress.image
+    });
+  };
 
   return (
     <section className="w-full">
       {title && (
-        <div className="flex justify-between items-end mb-6">
-          <h2 className="text-2xl font-bold text-[#1a202c] leading-none">{title}</h2>
-          <button 
-            onClick={() => requireAuth()}
-            className="text-sm font-medium text-gray-500 hover:text-black transition-colors"
-          >
-            View All
-          </button>
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 pb-4 border-b border-rose-100 gap-4">
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-serif font-black text-rose-950 leading-none">{title}</h2>
+            <p className="text-xs text-gray-500 mt-1.5">
+              Pure fabrics, designer embroidery, and authentic handloom weaves.
+            </p>
+          </div>
+          <div className="text-xs font-bold text-rose-800 bg-rose-50 px-3 py-1.5 rounded-full border border-rose-200">
+            Showing {products.length} Outfits Available
+          </div>
         </div>
       )}
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {products.map((product) => {
-          // Generate deterministic mock specs based on ID
-          const isRefurbished = product.id.charCodeAt(0) % 2 === 0;
-          const ram = (product.id.charCodeAt(1) % 3 === 0) ? '32GB DDR4' : '16GB DDR4';
-          const storage = (product.id.charCodeAt(2) % 2 === 0) ? '1TB NVMe' : '512GB NVMe';
+      {products.length === 0 ? (
+        <div className="text-center py-20 bg-white rounded-3xl border border-rose-100 p-8">
+          <ShoppingBag className="h-12 w-12 text-rose-200 mx-auto mb-3" />
+          <h3 className="text-lg font-bold text-slate-800">No Outfits Match Your Selected Filters</h3>
+          <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
+            Try adjusting your fabric choice, size, or price range to explore other collections.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7">
+          {products.map((dress) => {
+            const discountPct = Math.round(((dress.retailPrice - dress.price) / dress.retailPrice) * 100);
+            const isWish = isInWishlist(dress.id);
 
-          return (
-            <Link 
-              to={`/product/${product.id}`}
-              key={product.id} 
-              className="group cursor-pointer flex flex-col bg-white border border-gray-300 hover:shadow-lg transition-shadow duration-300 overflow-hidden"
-            >
-              {/* Image Area */}
-              <div className="h-[200px] w-full bg-gray-50 relative shrink-0 p-4 flex items-center justify-center">
-                <img 
-                  src={'imageUrl' in product ? product.imageUrl : product.image} 
-                  alt={product.name}
-                  className="max-h-full max-w-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
-                />
-                
-                {/* Badges */}
-                <div className="absolute top-3 right-3 flex flex-col gap-2 items-end">
-                  <span className="bg-white text-xs font-bold px-2 py-1 shadow-sm border border-gray-100 uppercase tracking-wider text-[#1a202c]">
-                    In Stock
-                  </span>
-                  {isRefurbished && (
-                    <span className="bg-gray-800 text-white text-xs font-bold px-2 py-1 shadow-sm uppercase tracking-wider">
-                      Refurbished
+            return (
+              <div 
+                key={dress.id}
+                onClick={() => navigate(`/product/${dress.id}`)}
+                className="group cursor-pointer flex flex-col bg-white border border-rose-100 rounded-3xl overflow-hidden hover:shadow-xl hover:border-rose-300 transition-all duration-300"
+              >
+                {/* Image */}
+                <div className="relative aspect-[3/4] w-full bg-rose-50 overflow-hidden">
+                  <img 
+                    src={dress.image} 
+                    alt={dress.name}
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                    referrerPolicy="no-referrer"
+                  />
+
+                  {/* Wishlist Button */}
+                  <button
+                    onClick={(e) => handleWishlistClick(e, dress)}
+                    className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-md rounded-full shadow-sm text-gray-400 hover:text-red-500 transition-colors z-10"
+                    title={isWish ? "Remove from Wishlist" : "Save to Wishlist"}
+                  >
+                    <Heart size={16} className={isWish ? "text-red-500 fill-red-500" : ""} />
+                  </button>
+
+                  {/* Discount & Fabric Tag */}
+                  <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+                    <span className="bg-rose-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase shadow">
+                      {discountPct}% OFF
                     </span>
+                    <span className="bg-white/95 text-slate-800 text-[10px] font-bold px-2 py-0.5 rounded-full shadow border border-rose-100">
+                      {dress.fabric.split(' ')[0]}
+                    </span>
+                  </div>
+
+                  {dress.isBestseller && (
+                    <div className="absolute bottom-3 left-3 bg-amber-400 text-amber-950 text-[10px] font-black px-2 py-0.5 rounded-full shadow uppercase">
+                      Bestseller
+                    </div>
                   )}
                 </div>
-              </div>
 
-              {/* Content Area */}
-              <div className="p-5 flex flex-col flex-1 border-t border-gray-50">
-                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-2 line-clamp-1">
-                  {product.category || 'Professional Series'}
-                </p>
-                <h3 className="text-base font-semibold text-[#1a202c] line-clamp-2 leading-tight mb-3 flex-1">
-                  {product.name}
-                </h3>
-                
-                <div className="flex items-center justify-between mb-4">
-                  <p className="text-xl font-bold text-[#1a202c]">₹{product.price.toLocaleString()}</p>
-                  <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 font-medium rounded-sm">Save</span>
-                </div>
-
-                {/* Specs Grid */}
-                <div className="grid grid-cols-2 gap-y-2 gap-x-4 bg-gray-50 p-3 rounded text-xs mb-5">
-                  <div className="flex flex-col">
-                    <span className="text-gray-400 font-medium uppercase text-[10px]">RAM</span>
-                    <span className="font-semibold text-[#1a202c]">{ram}</span>
+                {/* Details */}
+                <div className="p-5 flex flex-col flex-grow">
+                  <div className="flex items-center justify-between text-[11px] text-gray-500 font-bold uppercase tracking-wider mb-1">
+                    <span>{dress.brand}</span>
+                    <span className="text-rose-600 font-semibold">{dress.category}</span>
                   </div>
-                  <div className="flex flex-col">
-                    <span className="text-gray-400 font-medium uppercase text-[10px]">Storage</span>
-                    <span className="font-semibold text-[#1a202c]">{storage}</span>
+
+                  <h3 className="font-bold text-sm text-slate-900 group-hover:text-rose-700 transition-colors line-clamp-2 leading-snug mb-2">
+                    {dress.name}
+                  </h3>
+
+                  <p className="text-[11px] text-gray-500 line-clamp-1 mb-3">
+                    {dress.fabric}
+                  </p>
+
+                  {/* Size Chips */}
+                  <div className="flex items-center gap-1 flex-wrap mb-4">
+                    {dress.sizes.slice(0, 4).map((s, idx) => (
+                      <span key={idx} className="text-[10px] bg-rose-50 text-rose-900 border border-rose-100 px-2 py-0.5 rounded font-medium">
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Price */}
+                  <div className="mt-auto pt-3 border-t border-rose-50 flex items-center justify-between">
+                    <div>
+                      <div className="text-lg font-black text-rose-950">
+                        ₹{dress.price.toLocaleString()}
+                      </div>
+                      <div className="text-[10px] text-gray-400">
+                        MRP: <span className="line-through">₹{dress.retailPrice.toLocaleString()}</span>
+                      </div>
+                    </div>
+
+                    <a
+                      href={`https://wa.me/919655147000?text=${encodeURIComponent(`Vanakkam Sri Aadhi Nayaga Tex! I want to order/enquire about: ${dress.name} (Code: #${dress.id}) at wholesale price ₹${dress.price}. Please share colors & dispatch details.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-full transition-colors shadow-sm flex items-center gap-1 text-[11px] font-bold"
+                      title="Order on WhatsApp"
+                    >
+                      <MessageCircle size={13} />
+                      <span>WhatsApp</span>
+                    </a>
+                  </div>
+
+                  {/* Wholesale Reseller Set Price */}
+                  <div className="mt-2 text-[10px] text-emerald-800 bg-emerald-50 px-2 py-1 rounded font-medium flex justify-between">
+                    <span>Boutique Set ({dress.bundleQuantity} pcs):</span>
+                    <span className="font-bold">₹{dress.wholesalePrice.toLocaleString()}/pc</span>
                   </div>
                 </div>
-
-                {/* Button */}
-                <button className="w-full border border-gray-300 text-gray-700 bg-white py-2.5 text-xs font-bold tracking-widest uppercase hover:bg-gray-50 hover:text-black transition-colors mt-auto">
-                  View Details
-                </button>
               </div>
-            </Link>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </section>
   );
 }

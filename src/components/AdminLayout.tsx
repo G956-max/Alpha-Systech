@@ -84,9 +84,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         } bg-white border-r border-gray-200 transition-all duration-300 fixed h-full z-[70] flex flex-col shadow-sm`}
       >
         <div className="p-6 flex items-center justify-between">
-          <Link to="/admin" className="text-xl font-bold text-[#1a202c] tracking-tighter flex items-center gap-2">
-            <span className="bg-[#1a202c] text-white px-1.5 py-0.5 rounded text-sm uppercase">Alpha</span>
-            {(isSidebarOpen || isMobileMenuOpen) && <span className="uppercase text-lg">Systech</span>}
+          <Link to="/admin" className="text-xl font-bold text-[#1a202c] tracking-tight flex items-center gap-2">
+            <span className="bg-amber-600 text-white px-2 py-0.5 rounded text-xs uppercase font-black">Aadhi</span>
+            {(isSidebarOpen || isMobileMenuOpen) && <span className="text-base font-extrabold text-slate-800">Nayaga Tex</span>}
           </Link>
           <button 
             onClick={() => isMobileMenuOpen ? setIsMobileMenuOpen(false) : setIsSidebarOpen(!isSidebarOpen)}

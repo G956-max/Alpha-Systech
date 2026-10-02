@@ -188,7 +188,7 @@ export default function AdminDiscounts() {
                     <span className="capitalize text-gray-600">{discount.type}</span>
                   </td>
                   <td className="p-4 text-gray-900 font-medium">
-                    {discount.type === 'percentage' ? `${discount.value}%` : `$${discount.value.toFixed(2)}`}
+                    {discount.type === 'percentage' ? `${discount.value}%` : `₹${discount.value.toLocaleString()}`}
                   </td>
                   <td className="p-4 text-gray-600">
                     {discount.appliesTo === 'all' ? 'All Products' : `${discount.productIds?.length || 0} Products`}
@@ -262,14 +262,14 @@ export default function AdminDiscounts() {
                 className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#2C2C2C]/10 focus:border-[#2C2C2C] transition-all"
               >
                 <option value="percentage">Percentage (%)</option>
-                <option value="fixed">Fixed Amount ($)</option>
+                <option value="fixed">Fixed Amount (₹)</option>
               </select>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Value</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  {formData.type === 'percentage' ? <Percent size={16} className="text-gray-400" /> : <DollarSign size={16} className="text-gray-400" />}
+                  {formData.type === 'percentage' ? <Percent size={16} className="text-gray-400" /> : <span className="text-sm font-bold text-gray-400">₹</span>}
                 </div>
                 <input
                   type="number"

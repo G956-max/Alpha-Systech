@@ -255,7 +255,7 @@ export default function AdminProducts() {
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">{product.category}</td>
                     <td className="px-6 py-4 text-sm text-gray-500">{product.vendor || '—'}</td>
-                    <td className="px-6 py-4 text-sm font-bold text-gray-900">${product.price}</td>
+                    <td className="px-6 py-4 text-sm font-bold text-gray-900">₹{product.price?.toLocaleString()}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button 
