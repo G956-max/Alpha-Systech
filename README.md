@@ -1,20 +1,6 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Sri Aadhi Nayaga Tex - Erode Wholesale Textile & Saree Market
 
-# Run and deploy your AI Studio app
-
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/7e9ef566-c607-4d5a-aaa1-82ef49d3fc72
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Wholesale & Retail textile catalog shop located in Erode, Tamil Nadu.
+- Address: 53/A, Eswaran Temple, Kamarajar Street - 1, Erode - 638001
+- WhatsApp & Phone Orders: 9655147000 / 9655148000
+- All-India Parcel & Transport Dispatch
