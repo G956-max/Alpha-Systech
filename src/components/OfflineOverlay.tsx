@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { WifiOff, RefreshCw, AlertCircle } from 'lucide-react';
+import { RefreshCw, AlertCircle, WifiOff } from 'lucide-react';
+import { OFFLINE_VIDEO_DATA_URI } from '../assets/offlineVideoBase64';
 
 export default function OfflineOverlay() {
   const [isOffline, setIsOffline] = useState<boolean>(() => {
@@ -8,7 +9,6 @@ export default function OfflineOverlay() {
   });
   const [isRetrying, setIsRetrying] = useState<boolean>(false);
   const [retryMessage, setRetryMessage] = useState<string | null>(null);
-  const [videoError, setVideoError] = useState<boolean>(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -19,12 +19,9 @@ export default function OfflineOverlay() {
 
     const handleOffline = () => {
       setIsOffline(true);
-      setVideoError(false);
-      // Attempt video playback on network drop
       if (videoRef.current) {
-        videoRef.current.play().catch(() => {
-          // Autoplay policy fallback
-        });
+        videoRef.current.currentTime = 0;
+        videoRef.current.play().catch(() => {});
       }
     };
 
@@ -37,11 +34,18 @@ export default function OfflineOverlay() {
     };
   }, []);
 
+  useEffect(() => {
+    if (isOffline && videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [isOffline]);
+
   const handleRetry = async () => {
     setIsRetrying(true);
     setRetryMessage(null);
 
-    // Give visual feedback for the user tap
+    // Give visual tactile feedback
     await new Promise((resolve) => setTimeout(resolve, 600));
 
     if (navigator.onLine) {
@@ -74,38 +78,32 @@ export default function OfflineOverlay() {
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.92, y: 15 }}
             transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-            className="w-full max-w-[420px] bg-white rounded-3xl shadow-2xl border border-emerald-100 p-6 flex flex-col items-center text-center overflow-hidden relative"
+            className="w-full max-w-[420px] bg-white rounded-3xl shadow-2xl border border-emerald-100 p-5 flex flex-col items-center text-center overflow-hidden relative"
           >
             {/* Top decorative gradient bar */}
             <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-emerald-500 via-amber-400 to-green-500" />
 
-            {/* Offline Animation Video Display */}
-            <div className="w-full aspect-[736/492] bg-emerald-50/50 rounded-2xl overflow-hidden border border-emerald-100 flex items-center justify-center relative mb-4 shadow-inner">
-              {!videoError ? (
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  onError={() => setVideoError(true)}
-                  className="w-full h-full object-contain"
-                >
-                  <source src="/offline-animation-enhanced.mp4" type="video/mp4" />
-                  <source src="/assets/offline-animation-enhanced.mp4" type="video/mp4" />
-                </video>
-              ) : (
-                /* Fallback if video cannot load */
+            {/* Offline Animation Video Display - Guaranteed 100% Offline via Embedded High-Quality Video */}
+            <div className="w-full aspect-[736/492] bg-white rounded-2xl overflow-hidden border border-emerald-100 flex items-center justify-center relative mb-4 shadow-xs">
+              <video
+                ref={videoRef}
+                src={OFFLINE_VIDEO_DATA_URI}
+                autoPlay
+                loop
+                muted
+                playsInline
+                controls={false}
+                preload="auto"
+                className="w-full h-full object-contain"
+              >
+                <source src={OFFLINE_VIDEO_DATA_URI} type="video/mp4" />
+                <source src="/offline-animation-enhanced.mp4" type="video/mp4" />
+                {/* Visual Fallback if browser forbids video playback */}
                 <div className="flex flex-col items-center justify-center p-6 text-emerald-800">
-                  <div className="relative mb-2">
-                    <span className="absolute -inset-2 rounded-full bg-emerald-100 animate-ping opacity-75" />
-                    <div className="relative w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
-                      <WifiOff size={28} />
-                    </div>
-                  </div>
+                  <WifiOff size={32} className="text-emerald-600 mb-2" />
                   <span className="text-xs font-bold text-gray-500">Offline Mode</span>
                 </div>
-              )}
+              </video>
             </div>
 
             {/* Title & Description */}
@@ -123,7 +121,7 @@ export default function OfflineOverlay() {
               whileHover={{ scale: 1.02 }}
               onClick={handleRetry}
               disabled={isRetrying}
-              className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-extrabold text-sm py-3 px-6 rounded-2xl shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95 disabled:opacity-75"
+              className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-extrabold text-sm py-3.5 px-6 rounded-2xl shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95 disabled:opacity-75"
             >
               <RefreshCw
                 size={16}
