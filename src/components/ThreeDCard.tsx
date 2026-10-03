@@ -54,38 +54,50 @@ export default function ThreeDCard({
       style={{ touchAction: 'manipulation' }}
     >
       <motion.div
+        whileTap={{ 
+          scale: 0.94, 
+          rotateX: 4, 
+          transition: { type: 'spring', stiffness: 450, damping: 18 } 
+        }}
         animate={
           !isHovered && autoFloat
             ? {
-                rotateX: [0, 2.5, 0, -2.5, 0],
-                rotateY: [0, -2, 0, 2, 0],
-                y: [0, -3, 0, 2, 0]
+                rotateX: [0, 4.5, 0, -4.5, 0],
+                rotateY: [0, -3.5, 0, 3.5, 0],
+                y: [0, -5, 0, 3, 0]
               }
             : {
                 rotateX,
                 rotateY,
-                y: isHovered ? -4 : 0,
-                scale: isHovered ? 1.02 : 1
+                y: isHovered ? -5 : 0,
+                scale: isHovered ? 1.03 : 1
               }
         }
         transition={
           !isHovered && autoFloat
-            ? { duration: 5, repeat: Infinity, ease: 'easeInOut' }
-            : { type: 'spring', stiffness: 350, damping: 25 }
+            ? { duration: 3.2, repeat: Infinity, ease: 'easeInOut' }
+            : { type: 'spring', stiffness: 380, damping: 22 }
         }
-        style={{ transformStyle: 'preserve-3d' }}
-        className="w-full h-full relative"
+        style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
+        className="w-full h-full relative gpu-accel"
       >
         {children}
         
-        {/* Subtle 3D dynamic gloss reflection */}
-        {isHovered && (
+        {/* Dynamic 3D gloss reflection (works on hover and mobile) */}
+        {isHovered ? (
           <div 
             className="absolute inset-0 rounded-2xl pointer-events-none z-30 transition-opacity duration-300"
             style={{
-              background: `radial-gradient(circle at ${50 + rotateY * 3}% ${50 - rotateX * 3}%, rgba(255,255,255,0.2) 0%, transparent 65%)`
+              background: `radial-gradient(circle at ${50 + rotateY * 3}% ${50 - rotateX * 3}%, rgba(255,255,255,0.25) 0%, transparent 65%)`
             }}
           />
+        ) : (
+          /* Subtle mobile ambient light sheen */
+          <div 
+            className="absolute inset-0 rounded-2xl pointer-events-none z-20 opacity-30 overflow-hidden"
+          >
+            <div className="w-1/2 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-[-20deg] animate-[shimmer-sweep_4s_infinite]" />
+          </div>
         )}
       </motion.div>
     </div>

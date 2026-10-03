@@ -170,114 +170,129 @@ export default function ProductGrid({
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-2.5">
-          {products.map((item) => {
+          {products.map((item, index) => {
             const isWish = isInWishlist(item.id);
-            const discountPct = Math.round(((item.retailPrice - item.price) / item.retailPrice) * 100);
 
             return (
-              <ThreeDCard key={item.id} depth={10} autoFloat={true}>
-                <div 
-                  onClick={() => navigate(`/product/${item.id}`)}
-                  className="group cursor-pointer flex flex-col bg-white border border-emerald-100 rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all preserve-3d h-full"
-                >
-                  {/* Product Image */}
-                  <div className="relative aspect-[3/4] w-full bg-emerald-50/30 overflow-hidden">
-                    <img 
-                      src={item.image} 
-                      alt={item.name}
-                      className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500"
-                      loading="lazy"
-                    />
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 26, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: '-20px' }}
+                transition={{ 
+                  duration: 0.35, 
+                  delay: (index % 2) * 0.08,
+                  ease: [0.22, 1, 0.36, 1] 
+                }}
+                className="h-full"
+              >
+                <ThreeDCard depth={10} autoFloat={true}>
+                  <div 
+                    onClick={() => navigate(`/product/${item.id}`)}
+                    className="group cursor-pointer flex flex-col bg-white border border-emerald-100 rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all preserve-3d h-full"
+                  >
+                    {/* Product Image */}
+                    <div className="relative aspect-[3/4] w-full bg-emerald-50/30 overflow-hidden">
+                      <img 
+                        src={item.image} 
+                        alt={item.name}
+                        className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500"
+                        loading="lazy"
+                      />
 
-                    {/* Wishlist Button with Pop Animation */}
-                    <motion.button 
-                      whileTap={{ scale: 1.35 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleWishlist({
-                          id: item.id,
-                          name: item.name,
-                          price: item.price,
-                          category: item.category,
-                          imageUrl: item.image
-                        });
-                      }}
-                      className="absolute top-2 right-2 p-1.5 rounded-full bg-white/95 backdrop-blur-xs text-slate-700 shadow-md transition-transform z-10"
-                    >
-                      <Heart size={14} className={isWish ? "text-rose-500 fill-rose-500" : ""} />
-                    </motion.button>
+                      {/* Moving Fabric Sheen */}
+                      <div className="animate-shimmer-card opacity-35" />
 
-                    {/* 3D Popping Badges */}
-                    <div 
-                      className="absolute top-2 left-2 flex flex-col gap-1"
-                      style={{ transform: 'translateZ(20px)' }}
-                    >
-                      <span className="bg-gradient-to-r from-emerald-800 to-green-700 text-amber-300 text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase shadow-md border border-emerald-600/40">
-                        மொத்த விற்பனை
-                      </span>
-                      <span className="bg-white/95 text-emerald-950 text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow-xs border border-emerald-100">
-                        {item.fabric.split(' ')[0]}
-                      </span>
-                    </div>
+                      {/* Wishlist Button with Pop Animation */}
+                      <motion.button 
+                        whileTap={{ scale: 1.35 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleWishlist({
+                            id: item.id,
+                            name: item.name,
+                            price: item.price,
+                            category: item.category,
+                            imageUrl: item.image
+                          });
+                        }}
+                        className="absolute top-2 right-2 p-1.5 rounded-full bg-white/95 backdrop-blur-xs text-slate-700 shadow-md transition-transform z-10 active:scale-90"
+                      >
+                        <Heart size={14} className={isWish ? "text-rose-500 fill-rose-500" : ""} />
+                      </motion.button>
 
-                    {item.isBestseller && (
+                      {/* 3D Popping Badges */}
                       <div 
-                        className="absolute bottom-2 left-2 bg-gradient-to-r from-emerald-600 to-green-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full shadow-md uppercase border border-white/30"
-                        style={{ transform: 'translateZ(15px)' }}
+                        className="absolute top-2 left-2 flex flex-col gap-1"
+                        style={{ transform: 'translateZ(20px)' }}
                       >
-                        Fast Moving
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Details with 3D Depth */}
-                  <div className="p-2.5 flex flex-col flex-grow" style={{ transform: 'translateZ(10px)' }}>
-                    <div className="flex items-center justify-between text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-0.5">
-                      <span className="truncate">{item.category}</span>
-                      <span className="text-emerald-700 font-extrabold shrink-0 flex items-center gap-1">
-                        <span className="w-1 h-1 rounded-full bg-emerald-500 animate-ping" />
-                        In Stock
-                      </span>
-                    </div>
-
-                    <h3 className="font-bold text-xs text-slate-900 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug mb-1">
-                      {item.name}
-                    </h3>
-
-                    {/* Wholesale Enquiry Container - No Price Display */}
-                    <div className="mt-auto pt-2 border-t border-emerald-100 flex flex-col gap-1.5">
-                      {/* Wholesale Lot Info */}
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="bg-emerald-700 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider shadow-2xs">
-                          மொத்த விலை (Wholesale)
+                        <span className="bg-gradient-to-r from-emerald-800 to-green-700 text-amber-300 text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase shadow-md border border-emerald-600/40">
+                          மொத்த விற்பனை
                         </span>
-                        <span className="text-[9px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
-                          Pack of {item.bundleQuantity} Pcs
+                        <span className="bg-white/95 text-emerald-950 text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow-xs border border-emerald-100">
+                          {item.fabric.split(' ')[0]}
                         </span>
                       </div>
 
-                      <div className="text-[9.5px] text-gray-600 font-semibold leading-tight">
-                        நேரடி நெசவாளர் விலை • Best Weaver Rate
+                      {item.isBestseller && (
+                        <div 
+                          className="absolute bottom-2 left-2 bg-gradient-to-r from-emerald-600 to-green-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full shadow-md uppercase border border-white/30"
+                          style={{ transform: 'translateZ(15px)' }}
+                        >
+                          Fast Moving
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Details with 3D Depth */}
+                    <div className="p-2.5 flex flex-col flex-grow" style={{ transform: 'translateZ(10px)' }}>
+                      <div className="flex items-center justify-between text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-0.5">
+                        <span className="truncate">{item.category}</span>
+                        <span className="text-emerald-700 font-extrabold shrink-0 flex items-center gap-1">
+                          <span className="w-1 h-1 rounded-full bg-emerald-500 animate-ping" />
+                          In Stock
+                        </span>
                       </div>
 
-                      {/* WhatsApp Direct Enquiry Button (No Amount) */}
-                      <motion.a
-                        href={`https://wa.me/919655147000?text=${encodeURIComponent(`Vanakkam Sri Aadhi Nayaga Tex! I want to enquire wholesale price & details for: ${item.name} (#${item.id}) - Pack of ${item.bundleQuantity} Pcs.`)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileTap={{ scale: 0.94 }}
-                        whileHover={{ scale: 1.02 }}
-                        onClick={(e) => e.stopPropagation()}
-                        className="w-full mt-0.5 bg-gradient-to-r from-[#25D366] to-[#1eb855] hover:from-[#20ba5a] text-white py-1.5 px-2 rounded-xl text-[10px] font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all"
-                        title="Enquire on WhatsApp"
-                      >
-                        <MessageCircle size={13} className="shrink-0" />
-                        <span>WhatsApp-ல் விலை அறியவும்</span>
-                      </motion.a>
+                      <h3 className="font-bold text-xs text-slate-900 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug mb-1">
+                        {item.name}
+                      </h3>
+
+                      {/* Wholesale Enquiry Container - No Price Display */}
+                      <div className="mt-auto pt-2 border-t border-emerald-100 flex flex-col gap-1.5">
+                        {/* Wholesale Lot Info */}
+                        <div className="flex items-center justify-between gap-1">
+                          <span className="bg-emerald-700 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider shadow-2xs">
+                            மொத்த விலை (Wholesale)
+                          </span>
+                          <span className="text-[9px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                            Pack of {item.bundleQuantity} Pcs
+                          </span>
+                        </div>
+
+                        <div className="text-[9.5px] text-gray-600 font-semibold leading-tight">
+                          நேரடி நெசவாளர் விலை • Best Weaver Rate
+                        </div>
+
+                        {/* WhatsApp Direct Enquiry Button (No Amount) */}
+                        <motion.a
+                          href={`https://wa.me/919655147000?text=${encodeURIComponent(`Vanakkam Sri Aadhi Nayaga Tex! I want to enquire wholesale price & details for: ${item.name} (#${item.id}) - Pack of ${item.bundleQuantity} Pcs.`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          whileTap={{ scale: 0.92 }}
+                          whileHover={{ scale: 1.02 }}
+                          onClick={(e) => e.stopPropagation()}
+                          className="w-full mt-0.5 bg-gradient-to-r from-[#25D366] to-[#1eb855] hover:from-[#20ba5a] text-white py-1.5 px-2 rounded-xl text-[10px] font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all"
+                          title="Enquire on WhatsApp"
+                        >
+                          <MessageCircle size={13} className="shrink-0" />
+                          <span>WhatsApp-ல் விலை அறியவும்</span>
+                        </motion.a>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </ThreeDCard>
+                </ThreeDCard>
+              </motion.div>
             );
           })}
         </div>

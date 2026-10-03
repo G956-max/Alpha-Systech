@@ -128,46 +128,63 @@ export default function CategoryGrid({ title }: CategoryGridProps) {
       {/* Mobile 2-Column Category Cards with 3D Depth */}
       <div className="grid grid-cols-2 gap-2.5">
         {categories.map((category, index) => (
-          <ThreeDCard key={category.id} depth={12} autoFloat={true}>
-            <div 
-              className="group cursor-pointer relative overflow-hidden rounded-2xl aspect-[4/5] w-full border-2 border-emerald-100 shadow-sm hover:shadow-xl transition-all preserve-3d"
-              onClick={() => navigate(`/categories?q=${encodeURIComponent(category.name.split(' ')[0])}`)}
-            >
-              <img 
-                src={category.imageUrl} 
-                alt={category.name}
-                className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
-                referrerPolicy="no-referrer"
-              />
-              {/* Soft dark-emerald vignette for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/95 via-emerald-950/40 to-transparent group-hover:from-emerald-950 transition-colors" />
-              
-              {/* Category Badge with 3D Pop */}
-              {category.badge && (
-                <div 
-                  className="absolute top-2 left-2 bg-gradient-to-r from-emerald-500 to-green-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider border border-white/30"
-                  style={{ transform: 'translateZ(20px)' }}
-                >
-                  {category.badge}
-                </div>
-              )}
+          <motion.div
+            key={category.id}
+            initial={{ opacity: 0, y: 26, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-20px' }}
+            transition={{ 
+              duration: 0.35, 
+              delay: (index % 2) * 0.08,
+              ease: [0.22, 1, 0.36, 1] 
+            }}
+            className="h-full"
+          >
+            <ThreeDCard depth={12} autoFloat={true}>
+              <div 
+                className="group cursor-pointer relative overflow-hidden rounded-2xl aspect-[4/5] w-full border-2 border-emerald-100 shadow-sm hover:shadow-xl transition-all preserve-3d"
+                onClick={() => navigate(`/categories?q=${encodeURIComponent(category.name.split(' ')[0])}`)}
+              >
+                <img 
+                  src={category.imageUrl} 
+                  alt={category.name}
+                  className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
+                  referrerPolicy="no-referrer"
+                />
 
-              <div className="absolute bottom-0 inset-x-0 p-3 text-white" style={{ transform: 'translateZ(15px)' }}>
-                <h3 className="text-xs font-serif font-black tracking-tight leading-snug drop-shadow-md group-hover:text-amber-300 transition-colors">
-                  {category.name}
-                </h3>
-                {category.subText && (
-                  <p className="text-[10px] text-emerald-200 mt-0.5 line-clamp-1 font-light">
-                    {category.subText}
-                  </p>
+                {/* Moving Fabric Sheen */}
+                <div className="animate-shimmer-card opacity-35" />
+
+                {/* Soft dark-emerald vignette for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/95 via-emerald-950/40 to-transparent group-hover:from-emerald-950 transition-colors" />
+                
+                {/* Category Badge with 3D Pop */}
+                {category.badge && (
+                  <div 
+                    className="absolute top-2 left-2 bg-gradient-to-r from-emerald-500 to-green-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider border border-white/30"
+                    style={{ transform: 'translateZ(20px)' }}
+                  >
+                    {category.badge}
+                  </div>
                 )}
-                <div className="mt-1 flex items-center gap-1 text-[9px] font-black text-amber-300 group-hover:translate-x-1.5 transition-transform uppercase">
-                  <span>View Stock</span>
-                  <span>&rarr;</span>
+
+                <div className="absolute bottom-0 inset-x-0 p-3 text-white" style={{ transform: 'translateZ(15px)' }}>
+                  <h3 className="text-xs font-serif font-black tracking-tight leading-snug drop-shadow-md group-hover:text-amber-300 transition-colors">
+                    {category.name}
+                  </h3>
+                  {category.subText && (
+                    <p className="text-[10px] text-emerald-200 mt-0.5 line-clamp-1 font-light">
+                      {category.subText}
+                    </p>
+                  )}
+                  <div className="mt-1 flex items-center gap-1 text-[9px] font-black text-amber-300 group-hover:translate-x-1.5 transition-transform uppercase">
+                    <span>View Stock</span>
+                    <span>&rarr;</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </ThreeDCard>
+            </ThreeDCard>
+          </motion.div>
         ))}
       </div>
     </section>

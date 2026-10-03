@@ -160,7 +160,8 @@ body {
 }
 
 .animate-float-3d {
-  animation: float-3d 4s ease-in-out infinite;
+  animation: float-3d 3.5s ease-in-out infinite;
+  will-change: transform;
 }
 
 .animate-spin-3d {
@@ -178,16 +179,30 @@ body {
 .animate-laser {
   background: linear-gradient(90deg, #10b981, #34d399, #fbbf24, #10b981);
   background-size: 300% 100%;
-  animation: laser-sweep 3s linear infinite;
+  animation: laser-sweep 2.5s linear infinite;
 }
 
 .animate-shimmer-card {
   position: absolute;
   top: 0;
   left: 0;
-  width: 50%;
+  width: 60%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  animation: shimmer-sweep 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  animation: shimmer-sweep 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   pointer-events: none;
+}
+
+/* Mobile GPU acceleration & touch responsiveness */
+.gpu-accel {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.tap-bounce {
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.tap-bounce:active {
+  transform: scale(0.94);
 }

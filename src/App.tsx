@@ -65,14 +65,14 @@ const PublicLayout = () => {
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
-              initial={{ opacity: 0, y: 14, scale: 0.985 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.985 }}
+              initial={{ opacity: 0, x: 38, scale: 0.96 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: -32, scale: 0.97 }}
               transition={{ 
-                duration: 0.22, 
+                duration: 0.28, 
                 ease: [0.22, 1, 0.36, 1] 
               }}
-              className="w-full origin-top"
+              className="w-full origin-top gpu-accel"
             >
               {outlet}
             </motion.div>

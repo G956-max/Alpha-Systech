@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Plus, 
   Minus, 
@@ -101,13 +102,23 @@ export default function ProductDetail() {
       <div className="p-3 space-y-4">
         {/* Main Image Display */}
         <div className="bg-white border border-emerald-100 rounded-2xl overflow-hidden relative aspect-[4/5] shadow-xs flex items-center justify-center">
-          <img 
-            src={images[activeImage] || product.image} 
-            alt={product.name}
-            className="w-full h-full object-cover object-top transition-all duration-300"
-          />
+          <AnimatePresence mode="wait">
+            <motion.img 
+              key={activeImage}
+              initial={{ opacity: 0.6, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0.6 }}
+              transition={{ duration: 0.25 }}
+              src={images[activeImage] || product.image} 
+              alt={product.name}
+              className="w-full h-full object-cover object-top"
+            />
+          </AnimatePresence>
 
-          <div className="absolute top-2.5 left-2.5 flex flex-col gap-1">
+          {/* Continuous Fabric Sheen */}
+          <div className="animate-shimmer-card opacity-30" />
+
+          <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10">
             <span className="bg-gradient-to-r from-emerald-800 to-green-700 text-amber-300 text-[9px] font-black px-2 py-0.5 rounded-full uppercase shadow-xs border border-emerald-600/40">
               ஈரோடு மொத்த விற்பனை
             </span>
@@ -116,7 +127,8 @@ export default function ProductDetail() {
             </span>
           </div>
 
-          <button
+          <motion.button
+            whileTap={{ scale: 1.3 }}
             onClick={() => toggleWishlist({
               id: product.id,
               name: product.name,
@@ -124,10 +136,10 @@ export default function ProductDetail() {
               category: product.category,
               imageUrl: product.image
             })}
-            className="absolute top-2.5 right-2.5 p-2 bg-white/90 backdrop-blur-xs rounded-full shadow-xs text-slate-600 active:scale-90 transition-transform"
+            className="absolute top-2.5 right-2.5 p-2 bg-white/90 backdrop-blur-xs rounded-full shadow-xs text-slate-600 active:scale-90 transition-transform z-10"
           >
             <Heart size={18} className={isWish ? "text-rose-500 fill-rose-500" : ""} />
-          </button>
+          </motion.button>
         </div>
 
         {/* Thumbnail Strip */}
@@ -304,7 +316,10 @@ export default function ProductDetail() {
 
           {/* Direct WhatsApp & Call Action Buttons */}
           <div className="space-y-2 pt-2">
-            <a
+            <motion.a
+              whileTap={{ scale: 0.94 }}
+              animate={{ scale: [1, 1.015, 1] }}
+              transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
               href={`https://wa.me/919655147000?text=${encodeURIComponent(
                 `Vanakkam Sri Aadhi Nayaga Tex! I want to enquire wholesale price & order:
 • Product: ${product.name} (Code: #${product.id})
@@ -316,28 +331,30 @@ Please send wholesale rates, available colors and parcel dispatch details.`
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full bg-gradient-to-r from-[#25D366] via-[#20ba5a] to-[#1bb052] hover:opacity-95 text-white py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 active:scale-[0.98]"
+              className="w-full bg-gradient-to-r from-[#25D366] via-[#20ba5a] to-[#1bb052] hover:opacity-95 text-white py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30"
             >
               <MessageCircle size={18} />
               <span>WhatsApp-ல் விலை அறியவும் / Order (9655147000)</span>
-            </a>
+            </motion.a>
 
             <div className="grid grid-cols-2 gap-2">
-              <a
+              <motion.a
+                whileTap={{ scale: 0.94 }}
                 href="tel:9655148000"
                 className="w-full bg-slate-900 hover:bg-black text-white py-2.5 rounded-xl font-bold text-xs uppercase flex items-center justify-center gap-1.5 shadow-sm"
               >
                 <PhoneCall size={14} className="text-emerald-400" />
                 <span>9655148000</span>
-              </a>
+              </motion.a>
 
-              <a
+              <motion.a
+                whileTap={{ scale: 0.94 }}
                 href="tel:9655147000"
                 className="w-full bg-emerald-950 text-white py-2.5 rounded-xl font-bold text-xs uppercase flex items-center justify-center gap-1.5 shadow-sm"
               >
                 <PhoneCall size={14} className="text-emerald-300" />
                 <span>9655147000</span>
-              </a>
+              </motion.a>
             </div>
           </div>
 
