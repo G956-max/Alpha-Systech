@@ -40,6 +40,7 @@ import { PageLoadingSpinner } from './components/LoadingAnimation';
 
 import RouteTransitionBar from './components/RouteTransitionBar';
 import ScrollToTop from './components/ScrollToTop';
+import OfflineOverlay from './components/OfflineOverlay';
 
 const ProtectedAdminRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, role, loading } = useAuth();
@@ -97,6 +98,9 @@ function AppContent() {
           <AppSplashScreen onComplete={() => setShowSplash(false)} />
         )}
       </AnimatePresence>
+
+      {/* Offline Network Detection & Enhanced Video Overlay */}
+      <OfflineOverlay />
 
       <Routes>
         {/* Public Routes with persistent PublicLayout for fast, silky page transitions */}
