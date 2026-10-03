@@ -25,6 +25,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { allProducts } from '../data/products';
 import CategoryGrid from '../components/CategoryGrid';
+import ProductGrid from '../components/ProductGrid';
 import SizeGuideModal from '../components/SizeGuideModal';
 import ThreeDCard from '../components/ThreeDCard';
 import ThreeDText from '../components/ThreeDText';
@@ -339,125 +340,9 @@ export default function Home() {
         <CategoryGrid title="Wholesale Categories" />
       </section>
 
-      {/* Featured Stock Section */}
+      {/* Featured Stock Section with exact same 3D floating animation as categories */}
       <section className="px-3 py-4 bg-white border-y border-emerald-100">
-        <div className="flex items-center justify-between mb-3 pb-2 border-b border-emerald-100">
-          <div>
-            <div className="flex items-center gap-1.5 mb-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-ping" />
-              <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">
-                Fast Moving Stock
-              </span>
-            </div>
-            <h2 className="text-base font-serif font-black text-slate-900 leading-tight">
-              Featured Textiles
-            </h2>
-          </div>
-
-          <button 
-            onClick={() => navigate('/categories')}
-            className="text-[11px] font-bold text-emerald-700 hover:text-emerald-900 flex items-center gap-1 shrink-0"
-          >
-            All 12 &rarr;
-          </button>
-        </div>
-
-        {/* 2-Column Mobile Product Grid with 3D Depth & Stagger */}
-        <div className="grid grid-cols-2 gap-2.5">
-          {featuredTextiles.map((item, index) => {
-            const discountPct = Math.round(((item.retailPrice - item.price) / item.retailPrice) * 100);
-
-            return (
-              <motion.div 
-                key={item.id}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, delay: index * 0.05 }}
-                whileTap={{ scale: 0.97 }}
-                whileHover={{ y: -3 }}
-                onClick={() => navigate(`/product/${item.id}`)}
-                className="group cursor-pointer flex flex-col bg-white border border-emerald-100 rounded-2xl overflow-hidden shadow-xs hover:shadow-lg transition-all"
-              >
-                {/* Image with Shimmer */}
-                <div className="relative aspect-[3/4] w-full bg-emerald-50/40 overflow-hidden">
-                  <img 
-                    src={item.image} 
-                    alt={item.name}
-                    className="w-full h-full object-cover object-top group-hover:scale-108 transition-transform duration-700"
-                    loading="lazy"
-                  />
-
-                  {/* Badges */}
-                  <div className="absolute top-2 left-2 flex flex-col gap-1">
-                    <span className="bg-gradient-to-r from-emerald-800 to-green-700 text-amber-300 text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase shadow-xs border border-emerald-600/40">
-                      மொத்த விற்பனை
-                    </span>
-                    <span className="bg-white/95 text-emerald-950 text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow-xs border border-emerald-100">
-                      {item.category}
-                    </span>
-                  </div>
-
-                  {item.isBestseller && (
-                    <motion.div 
-                      animate={{ scale: [1, 1.05, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="absolute bottom-2 left-2 bg-emerald-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full shadow-xs uppercase"
-                    >
-                      Fast Moving
-                    </motion.div>
-                  )}
-                </div>
-
-                {/* Body */}
-                <div className="p-2.5 flex flex-col flex-grow">
-                  <div className="flex items-center justify-between text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-0.5">
-                    <span className="truncate">{item.brand}</span>
-                    <span className="text-emerald-700 font-extrabold shrink-0">In Stock</span>
-                  </div>
-
-                  <h3 className="font-bold text-xs text-slate-900 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug mb-1">
-                    {item.name}
-                  </h3>
-
-                  <p className="text-[10px] text-gray-500 line-clamp-1 mb-1.5 font-light">
-                    Fabric: {item.fabric}
-                  </p>
-
-                  {/* Wholesale Enquiry Container - No Price Display */}
-                  <div className="mt-auto pt-2 border-t border-emerald-100 flex flex-col gap-1.5">
-                    {/* Wholesale Lot Info */}
-                    <div className="flex items-center justify-between gap-1">
-                      <span className="bg-emerald-700 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider shadow-2xs">
-                        மொத்த விலை
-                      </span>
-                      <span className="text-[9px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
-                        Pack of {item.bundleQuantity} Pcs
-                      </span>
-                    </div>
-
-                    <div className="text-[9.5px] text-gray-600 font-semibold leading-tight">
-                      நேரடி நெசவாளர் விலை • Best Weaver Rate
-                    </div>
-
-                    {/* WhatsApp Direct Enquiry Button (No Amount) */}
-                    <motion.a
-                      href={`https://wa.me/919655147000?text=${encodeURIComponent(`Vanakkam Sri Aadhi Nayaga Tex! I want to enquire wholesale price & details for: ${item.name} (#${item.id}) - Pack of ${item.bundleQuantity} Pcs.`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileTap={{ scale: 0.94 }}
-                      onClick={(e) => e.stopPropagation()}
-                      className="w-full mt-0.5 bg-gradient-to-r from-[#25D366] to-[#1eb855] hover:from-[#20ba5a] text-white py-1.5 px-2 rounded-xl text-[10px] font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all"
-                      title="Enquire on WhatsApp"
-                    >
-                      <MessageCircle size={13} className="shrink-0" />
-                      <span>WhatsApp-ல் விலை அறியவும்</span>
-                    </motion.a>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
+        <ProductGrid title="Featured Textiles" count={8} />
       </section>
 
       {/* Wholesale Bulk Orders Mobile Banner with 3D Depth */}

@@ -186,7 +186,7 @@ export default function ProductGrid({
                 }}
                 className="h-full"
               >
-                <ThreeDCard depth={10} autoFloat={true}>
+                <ThreeDCard depth={12} autoFloat={true}>
                   <div 
                     onClick={() => navigate(`/product/${item.id}`)}
                     className="group cursor-pointer flex flex-col bg-white border border-emerald-100 rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all preserve-3d h-full"
