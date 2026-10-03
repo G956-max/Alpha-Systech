@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Mail, MapPin, PhoneCall, Truck, ShieldCheck, MessageCircle, Ruler, Boxes } from 'lucide-react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Mail, MapPin, PhoneCall, Truck, ShieldCheck, MessageCircle, Ruler } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import SizeGuideModal from './SizeGuideModal';
 
 export default function Footer() {
@@ -8,121 +8,100 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="bg-[#0f172a] text-gray-400 pt-16 pb-12 border-t border-indigo-950 text-xs font-sans">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-10 mb-12">
-            
-            {/* Logo and Description */}
-            <div className="md:col-span-2 pr-0 sm:pr-8 space-y-4">
-              <div className="flex items-center gap-2.5">
-                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-800 via-indigo-700 to-amber-500 text-white font-serif font-black flex items-center justify-center text-xl shadow-md">
-                  A
-                </div>
-                <div>
-                  <h3 className="font-serif font-black text-lg text-white tracking-tight">
-                    SRI AADHI NAYAGA TEX
-                  </h3>
-                  <p className="text-[10px] text-amber-400 font-bold uppercase tracking-wider">
-                    Erode Wholesale Textile &amp; Saree Market
-                  </p>
-                </div>
-              </div>
-
-              <p className="text-gray-400 text-xs leading-relaxed max-w-sm font-light">
-                Wholesale textile and saree market shop located in Erode, Tamil Nadu. Direct manufacturer prices for Sarees, Nighties, Inskirts, Blouses, Lungis, Churidars, Tops &amp; Kurtis, Vetti &amp; Sattai, and Lining Materials. We accept wholesale bulk orders with All-India delivery.
+      <footer className="bg-[#064E3B] text-emerald-100 pt-8 pb-10 border-t border-emerald-900 text-xs font-sans">
+        <div className="px-4 space-y-6">
+          {/* Brand Header */}
+          <div className="flex items-center gap-2.5">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-green-300 text-emerald-950 font-serif font-black flex items-center justify-center text-xl shadow-md shrink-0">
+              A
+            </div>
+            <div>
+              <h3 className="font-serif font-black text-base text-white tracking-tight">
+                SRI AADHI NAYAGA TEX
+              </h3>
+              <p className="text-[10px] text-emerald-300 font-bold uppercase tracking-wider">
+                Erode Wholesale Textile &amp; Saree Market
               </p>
-
-              <div className="pt-2 flex flex-wrap gap-3">
-                <a
-                  href="https://wa.me/919655147000?text=Vanakkam%20Sri%20Aadhi%20Nayaga%20Tex"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1.5 transition-colors shadow"
-                >
-                  <MessageCircle size={14} />
-                  WhatsApp: 9655147000
-                </a>
-
-                <a
-                  href="tel:9655148000"
-                  className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1.5 transition-colors"
-                >
-                  <PhoneCall size={14} className="text-amber-300" />
-                  9655148000
-                </a>
-              </div>
             </div>
-            
-            {/* Products List 1 */}
-            <div>
-              <h4 className="font-bold mb-4 uppercase tracking-wider text-xs text-white">
-                TEXTILE PRODUCTS
-              </h4>
-              <ul className="space-y-2.5 text-gray-300">
-                <li><Link to="/categories?q=Sarees" className="hover:text-amber-300 transition-colors">Cotton &amp; Soft Silk Sarees</Link></li>
-                <li><Link to="/categories?q=Sarees" className="hover:text-amber-300 transition-colors">Fancy, Designer &amp; Pattu Sarees</Link></li>
-                <li><Link to="/categories?q=Nighties" className="hover:text-amber-300 transition-colors">Pure Cotton &amp; Feeding Nighties</Link></li>
-                <li><Link to="/categories?q=Inskirts" className="hover:text-amber-300 transition-colors">6-Cut Cotton Inskirts (Petticoats)</Link></li>
-                <li><Link to="/categories?q=Blouses" className="hover:text-amber-300 transition-colors">Readymade &amp; Designer Blouses</Link></li>
-              </ul>
-            </div>
-            
-            {/* Products List 2 */}
-            <div>
-              <h4 className="font-bold mb-4 uppercase tracking-wider text-xs text-white">
-                WHOLESALE CATEGORIES
-              </h4>
-              <ul className="space-y-2.5 text-gray-300">
-                <li><Link to="/categories?q=Lungis" className="hover:text-amber-300 transition-colors">Erode Handloom Cotton Lungis</Link></li>
-                <li><Link to="/categories?q=Churidars" className="hover:text-amber-300 transition-colors">Readymade Churidars &amp; Materials</Link></li>
-                <li><Link to="/categories?q=Tops" className="hover:text-amber-300 transition-colors">Tops &amp; Daily Kurtis</Link></li>
-                <li><Link to="/categories?q=Vetti" className="hover:text-amber-300 transition-colors">Vetti &amp; Sattai Matching Sets</Link></li>
-                <li><Link to="/categories?q=Lining" className="hover:text-amber-300 transition-colors">2x2 Aster Lining Materials</Link></li>
-              </ul>
-            </div>
-
-            {/* Shop Address & Hours */}
-            <div>
-              <h4 className="font-bold mb-4 uppercase tracking-wider text-xs text-white">
-                ERODE SHOP ADDRESS
-              </h4>
-              <div className="space-y-3 text-[11px]">
-                <div className="flex items-start gap-2">
-                  <MapPin size={16} className="text-amber-400 shrink-0 mt-0.5" />
-                  <span className="text-gray-300">
-                    53/A, Eswaran Temple,<br />
-                    Kamarajar Street - 1,<br />
-                    Erode - 638001, Tamil Nadu.
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-white font-bold pt-1">
-                  <PhoneCall size={14} className="text-green-400" />
-                  <span>Orders: 9655147000 / 9655148000</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-400">
-                  <Mail size={14} />
-                  <span>orders@sriaadhinayagatex.com</span>
-                </div>
-              </div>
-            </div>
-
           </div>
-          
-          {/* Bottom Bar */}
-          <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-[11px] text-gray-500 gap-4">
-            <p>
-              &copy; {new Date().getFullYear()} Sri Aadhi Nayaga Tex. 53/A, Eswaran Temple, Kamarajar Street - 1, Erode - 638001. All rights reserved.
-            </p>
-            <div className="flex items-center gap-6">
-              <span className="flex items-center gap-1.5 text-gray-400">
-                <Truck size={14} className="text-amber-400" />
-                All-India Parcel &amp; Transport Delivery
-              </span>
-              <span className="flex items-center gap-1.5 text-gray-400">
-                <ShieldCheck size={14} className="text-emerald-400" />
-                Direct Erode Wholesale Rates
+
+          <p className="text-emerald-200/90 text-xs leading-relaxed font-light">
+            Erode manufacturer &amp; wholesale prices for Sarees, Nighties, Inskirts, Blouses, Lungis, Churidars, Tops, Vetti and Lining Materials. Daily All-India Parcel Dispatch.
+          </p>
+
+          {/* Quick Action Contact Buttons */}
+          <div className="grid grid-cols-2 gap-2">
+            <a
+              href="https://wa.me/919655147000?text=Vanakkam%20Sri%20Aadhi%20Nayaga%20Tex"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#25D366] hover:bg-[#20ba5a] text-white py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow"
+            >
+              <MessageCircle size={15} />
+              <span>9655147000</span>
+            </a>
+
+            <a
+              href="tel:9655148000"
+              className="bg-emerald-950/80 text-white border border-emerald-700/60 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5"
+            >
+              <PhoneCall size={14} className="text-emerald-300" />
+              <span>9655148000</span>
+            </a>
+          </div>
+
+          {/* Store Address Card */}
+          <div className="bg-emerald-950/50 rounded-2xl p-3.5 border border-emerald-800/60 space-y-2 text-[11px]">
+            <div className="flex items-start gap-2 text-emerald-100">
+              <MapPin size={15} className="text-emerald-400 shrink-0 mt-0.5" />
+              <span>
+                <b>Sri Aadhi Nayaga Tex</b><br />
+                53/A, Eswaran Temple, Kamarajar Street - 1,<br />
+                Erode - 638001, Tamil Nadu.
               </span>
             </div>
+
+            <div className="pt-2 border-t border-emerald-800/50 flex items-center justify-between text-[10px] text-emerald-300">
+              <span className="flex items-center gap-1">
+                <Truck size={12} /> All-India Parcel Dispatch
+              </span>
+              <span className="flex items-center gap-1">
+                <ShieldCheck size={12} /> Direct Weaver Rates
+              </span>
+            </div>
+          </div>
+
+          {/* Quick Category Chips */}
+          <div className="space-y-2">
+            <span className="text-[10px] font-bold text-emerald-300 uppercase tracking-wider block">
+              Quick Categories
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {[
+                'Sarees',
+                'Nighties',
+                'Inskirts',
+                'Lungis',
+                'Churidars',
+                'Tops',
+                'Vetti',
+                'Lining'
+              ].map((c) => (
+                <Link
+                  key={c}
+                  to={`/categories?q=${encodeURIComponent(c)}`}
+                  className="bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 px-2.5 py-1 rounded-lg text-[10px] font-medium border border-emerald-700/40"
+                >
+                  {c}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom Copyright */}
+          <div className="pt-4 border-t border-emerald-900/80 text-[10px] text-emerald-300/70 text-center space-y-1">
+            <p>&copy; {new Date().getFullYear()} Sri Aadhi Nayaga Tex, Erode. All rights reserved.</p>
+            <p>Mobile Wholesale Shopping Portal • WhatsApp Orders Only</p>
           </div>
         </div>
       </footer>

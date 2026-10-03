@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'motion/react';
+import { Lock, Mail } from 'lucide-react';
 
 type UserMode = 'login' | 'signup';
 
@@ -10,8 +11,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [userMode, setUserMode] = useState<UserMode>('login');
   
-  // User State
-  const [email, setEmail] = useState(''); // for signup and login email
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
   const [error, setError] = useState('');
@@ -59,10 +59,13 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-[#FAF9F6] px-4 py-12">
-      <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className="min-h-[75vh] flex items-center justify-center p-3 bg-[#F7FCF9]">
+      <div className="w-full bg-white p-5 rounded-2xl shadow-xs border border-emerald-100 overflow-hidden">
         
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-700 to-green-500 text-white font-serif font-black text-2xl flex items-center justify-center mx-auto mb-3 shadow-md shadow-emerald-600/20">
+            A
+          </div>
           <AnimatePresence mode="wait">
             <motion.div
               key={userMode}
@@ -71,11 +74,11 @@ export default function Login() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
             >
-              <h2 className="text-3xl font-serif font-bold text-[#2C2C2C]">
+              <h2 className="text-xl font-serif font-bold text-slate-900">
                 {userMode === 'login' ? 'Welcome Back' : 'Create Account'}
               </h2>
-              <p className="text-gray-500 mt-2">
-                {userMode === 'login' ? 'Sign in with your email to access wholesale rates.' : 'Join us to explore Sri Aadhi Nayaga Tex wholesale & retail collection.'}
+              <p className="text-xs text-gray-500 mt-1">
+                {userMode === 'login' ? 'Sign in to access wholesale catalog & prices' : 'Join Sri Aadhi Nayaga Tex wholesale platform'}
               </p>
             </motion.div>
           </AnimatePresence>
@@ -84,72 +87,67 @@ export default function Login() {
         <AnimatePresence>
           {error && (
             <motion.div 
-              initial={{ opacity: 0, height: 0, marginBottom: 0 }}
-              animate={{ opacity: 1, height: 'auto', marginBottom: 24 }}
-              exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-              className="overflow-hidden"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="overflow-hidden mb-4"
             >
-              <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
+              <div className="p-2.5 bg-rose-50 text-rose-700 text-xs rounded-xl border border-rose-200">
                 {error}
               </div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        <div className="space-y-6">
-          <form onSubmit={handleUserAuth} className="space-y-6">
-            <div className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address
-                </label>
-                <input 
-                  type="email" 
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="user@example.com"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#2C2C2C] focus:border-transparent transition-all"
-                />
-              </div>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.2 }}
-            >
-              <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+        <form onSubmit={handleUserAuth} className="space-y-3.5 text-xs">
+          <div>
+            <label className="block text-[11px] font-bold text-slate-700 mb-1">
+              Email Address
+            </label>
+            <div className="relative">
               <input 
-                type="password" 
+                type="email" 
                 required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#2C2C2C] focus:border-transparent transition-all"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="user@example.com"
+                className="w-full px-3.5 py-2.5 bg-emerald-50/40 rounded-xl border border-emerald-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
               />
-            </motion.div>
-
-            <motion.button 
-              whileTap={{ scale: 0.98 }}
-              type="submit"
-              disabled={loading}
-              className="w-full bg-[#2C2C2C] text-white py-3 rounded-lg font-medium hover:bg-black transition-colors shadow-sm mt-2 disabled:opacity-70"
-            >
-              {loading ? 'Please wait...' : (userMode === 'login' ? 'Sign In' : 'Create Account')}
-            </motion.button>
-          </form>
-
-          <div className="text-center mt-4">
-            <button 
-              onClick={() => handleModeSwitch(userMode === 'login' ? 'signup' : 'login')}
-              className="text-sm text-gray-600 hover:text-[#2C2C2C] font-medium transition-colors"
-            >
-              {userMode === 'login' 
-                ? "Don't have an account? Sign up" 
-                : "Already have an account? Sign in"}
-            </button>
+            </div>
           </div>
+
+          <div>
+            <label className="block text-[11px] font-bold text-slate-700 mb-1">
+              Password
+            </label>
+            <input 
+              type="password" 
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              className="w-full px-3.5 py-2.5 bg-emerald-50/40 rounded-xl border border-emerald-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
+            />
+          </div>
+
+          <button 
+            type="submit"
+            disabled={loading}
+            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-xs uppercase tracking-wider shadow-md shadow-emerald-600/30 transition-all mt-2 disabled:opacity-70 active:scale-95"
+          >
+            {loading ? 'Please wait...' : (userMode === 'login' ? 'Sign In' : 'Create Account')}
+          </button>
+        </form>
+
+        <div className="text-center mt-4 pt-3 border-t border-emerald-50">
+          <button 
+            onClick={() => handleModeSwitch(userMode === 'login' ? 'signup' : 'login')}
+            className="text-xs text-emerald-700 hover:text-emerald-900 font-semibold"
+          >
+            {userMode === 'login' 
+              ? "New here? Create an account" 
+              : "Already have an account? Sign in"}
+          </button>
         </div>
       </div>
     </div>

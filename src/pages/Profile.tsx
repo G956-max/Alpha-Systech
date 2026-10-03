@@ -31,90 +31,58 @@ export default function Profile() {
   };
 
   return (
-    <div className="bg-[#f5f5f5] min-h-screen">
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex flex-col md:flex-row gap-8">
-        {/* Left Sidebar */}
-        <div className="w-full md:w-64 flex-shrink-0">
-          <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
-            <div className="flex flex-col items-center text-center">
-              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4 overflow-hidden">
-                {user?.photoURL ? (
-                  <img src={user.photoURL} alt="Profile" className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-3xl font-semibold text-gray-400">
-                    {user?.email?.charAt(0).toUpperCase() || 'U'}
-                  </span>
-                )}
-              </div>
-              <h2 className="text-xl font-bold text-gray-900">{user?.displayName || 'User'}</h2>
-              <p className="text-sm text-gray-500 mt-1">{user?.email}</p>
-            </div>
+    <div className="bg-[#F7FCF9] min-h-screen pb-6 p-3">
+      {/* Mobile User Header */}
+      <div className="bg-white rounded-2xl p-4 shadow-xs border border-emerald-100 mb-3 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center font-bold text-lg">
+            {user?.email?.charAt(0).toUpperCase() || 'U'}
           </div>
-
-          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-            <nav className="flex flex-col">
-              <button
-                onClick={() => setActiveTab('profile')}
-                className={`flex items-center px-6 py-4 text-sm font-medium transition-colors ${
-                  activeTab === 'profile'
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <User className="w-5 h-5 mr-3" />
-                My Profile
-              </button>
-              <button
-                onClick={() => setActiveTab('orders')}
-                className={`flex items-center px-6 py-4 text-sm font-medium transition-colors ${
-                  activeTab === 'orders'
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <Package className="w-5 h-5 mr-3" />
-                My Orders
-              </button>
-              <button
-                onClick={() => setActiveTab('wishlist')}
-                className={`flex items-center px-6 py-4 text-sm font-medium transition-colors ${
-                  activeTab === 'wishlist'
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <Heart className="w-5 h-5 mr-3" />
-                Wishlist
-              </button>
-              <button
-                onClick={() => setActiveTab('settings')}
-                className={`flex items-center px-6 py-4 text-sm font-medium transition-colors ${
-                  activeTab === 'settings'
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <Settings className="w-5 h-5 mr-3" />
-                Account Settings
-              </button>
-              <div className="h-px bg-gray-100 my-2"></div>
-              <button
-                onClick={handleLogout}
-                className="flex items-center px-6 py-4 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
-              >
-                <LogOut className="w-5 h-5 mr-3" />
-                Logout
-              </button>
-            </nav>
+          <div>
+            <h2 className="text-sm font-bold text-slate-900">{user?.displayName || 'Wholesale Buyer'}</h2>
+            <p className="text-[11px] text-gray-500">{user?.email}</p>
           </div>
         </div>
 
-        {/* Right Content Area */}
-        <div className="flex-1">
-          {renderContent()}
-        </div>
+        <button
+          onClick={handleLogout}
+          className="p-2 text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
+          title="Logout"
+        >
+          <LogOut size={18} />
+        </button>
       </div>
+
+      {/* Mobile Horizontal Tabs */}
+      <div className="flex gap-1.5 overflow-x-auto no-scrollbar mb-3 bg-white p-1.5 rounded-2xl border border-emerald-100 shadow-xs">
+        {[
+          { id: 'profile', label: 'Profile', icon: User },
+          { id: 'orders', label: 'Orders', icon: Package },
+          { id: 'wishlist', label: 'Wishlist', icon: Heart },
+          { id: 'settings', label: 'Settings', icon: Settings },
+        ].map(tab => {
+          const Icon = tab.icon;
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`flex-1 flex items-center justify-center gap-1 py-2 px-2.5 rounded-xl text-xs font-bold transition-all ${
+                isActive
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'text-slate-600 hover:bg-emerald-50'
+              }`}
+            >
+              <Icon size={14} />
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Content Area */}
+      <div>
+        {renderContent()}
       </div>
     </div>
   );

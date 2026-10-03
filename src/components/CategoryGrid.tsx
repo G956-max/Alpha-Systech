@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { collection, onSnapshot } from 'firebase/firestore';
+import { motion } from 'motion/react';
 import { db } from '../firebase';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
+import ThreeDCard from './ThreeDCard';
 
 interface Category {
   id: string;
@@ -17,57 +19,57 @@ const SRI_AADHI_CATEGORIES: Category[] = [
     id: '1', 
     name: 'Sarees', 
     imageUrl: 'https://images.unsplash.com/photo-1610030469668-93510cb07707?auto=format&fit=crop&q=80&w=800', 
-    subText: 'Cotton, Soft Silk, Fancy, Bridal, Banarasi & Pattu',
+    subText: 'Cotton, Soft Silk, Pattu',
     badge: 'Direct Weaver'
   },
   { 
     id: '2', 
     name: 'Nighties', 
     imageUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=800', 
-    subText: 'Pure Cotton, Feeding & Zipper Alpine Nighties',
+    subText: 'Cotton & Feeding Nighties',
     badge: '100% Cotton'
   },
   { 
     id: '3', 
-    name: 'Inskirts & Blouses', 
+    name: 'Inskirts', 
     imageUrl: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800', 
-    subText: '6-Cut Cotton Petticoats & Aari Work Blouses',
+    subText: 'Petticoats & Blouses',
     badge: 'All Colors'
   },
   { 
     id: '4', 
     name: 'Lungis', 
     imageUrl: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=800', 
-    subText: 'Erode Famous 100% Handloom Cotton Lungis',
+    subText: 'Erode Handloom Lungis',
     badge: 'Erode Special'
   },
   { 
     id: '5', 
-    name: 'Churidars & Materials', 
+    name: 'Churidars', 
     imageUrl: 'https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?auto=format&fit=crop&q=80&w=800', 
-    subText: 'Readymade Stitched & Unstitched Dress Materials',
+    subText: 'Stitched & Materials',
     badge: 'Trending'
   },
   { 
     id: '6', 
     name: 'Tops & Kurtis', 
     imageUrl: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&q=80&w=800', 
-    subText: 'Rayon & Cotton Printed Daily & Office Kurtis',
+    subText: 'Daily & Office Wear',
     badge: 'Daily Wear'
   },
   { 
     id: '7', 
     name: 'Vetti & Sattai', 
     imageUrl: 'https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?auto=format&fit=crop&q=80&w=800', 
-    subText: 'Traditional Pure Cotton Dhoti & Shirt Sets',
+    subText: 'Pure Cotton Dhoti Sets',
     badge: 'Festive'
   },
   { 
     id: '8', 
     name: 'Lining & Inners', 
     imageUrl: 'https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&q=80&w=800', 
-    subText: 'Pure Cotton 2x2 Rubia Aster Lining & Inners',
-    badge: 'Tailoring Bits'
+    subText: '2x2 Aster Rubia Lining',
+    badge: 'Tailoring'
   }
 ];
 
@@ -101,56 +103,71 @@ export default function CategoryGrid({ title }: CategoryGridProps) {
 
   return (
     <section className="w-full">
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4 pb-4 border-b border-indigo-100">
+      {/* Section Header */}
+      <div className="flex items-center justify-between mb-3 pb-2 border-b border-emerald-100">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-serif font-black text-slate-900 leading-none">{title}</h2>
-          <p className="text-xs text-gray-500 mt-1.5">
-            Sourced directly from Erode weavers &amp; powerloom mills at lowest wholesale rates.
-          </p>
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+            <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider">
+              Erode Market Stock
+            </span>
+          </div>
+          <h2 className="text-base font-serif font-black text-slate-900 leading-tight">
+            {title}
+          </h2>
         </div>
 
         <button 
           onClick={() => navigate('/categories')}
-          className="text-xs font-bold text-indigo-700 hover:text-indigo-900 flex items-center gap-1 transition-colors self-start sm:self-auto"
+          className="text-[11px] font-bold text-emerald-700 hover:text-emerald-900 flex items-center gap-1 shrink-0"
         >
-          View Full Textile Catalog <ArrowRight size={14} />
+          View All <ArrowRight size={13} />
         </button>
       </div>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {categories.map((category) => (
-          <div 
-            key={category.id} 
-            className="group cursor-pointer relative overflow-hidden rounded-3xl aspect-[3/4] w-full border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300"
-            onClick={() => navigate(`/categories?q=${encodeURIComponent(category.name.split(' ')[0])}`)}
-          >
-            <img 
-              src={category.imageUrl} 
-              alt={category.name}
-              className="w-full h-full object-cover object-top group-hover:scale-108 transition-transform duration-700"
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent group-hover:from-slate-950/95 transition-colors duration-300" />
-            
-            {/* Badge */}
-            {category.badge && (
-              <div className="absolute top-4 left-4 bg-amber-400 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full shadow">
-                {category.badge}
-              </div>
-            )}
 
-            <div className="absolute bottom-0 inset-x-0 p-5 text-white">
-              <h3 className="text-xl font-serif font-black tracking-tight leading-snug">{category.name}</h3>
-              {category.subText && (
-                <p className="text-xs text-indigo-200 mt-1 line-clamp-1 font-light">
-                  {category.subText}
-                </p>
+      {/* Mobile 2-Column Category Cards with 3D Depth */}
+      <div className="grid grid-cols-2 gap-2.5">
+        {categories.map((category, index) => (
+          <ThreeDCard key={category.id} depth={12} autoFloat={true}>
+            <div 
+              className="group cursor-pointer relative overflow-hidden rounded-2xl aspect-[4/5] w-full border-2 border-emerald-100 shadow-sm hover:shadow-xl transition-all preserve-3d"
+              onClick={() => navigate(`/categories?q=${encodeURIComponent(category.name.split(' ')[0])}`)}
+            >
+              <img 
+                src={category.imageUrl} 
+                alt={category.name}
+                className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
+                referrerPolicy="no-referrer"
+              />
+              {/* Soft dark-emerald vignette for text readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/95 via-emerald-950/40 to-transparent group-hover:from-emerald-950 transition-colors" />
+              
+              {/* Category Badge with 3D Pop */}
+              {category.badge && (
+                <div 
+                  className="absolute top-2 left-2 bg-gradient-to-r from-emerald-500 to-green-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider border border-white/30"
+                  style={{ transform: 'translateZ(20px)' }}
+                >
+                  {category.badge}
+                </div>
               )}
-              <div className="mt-3 flex items-center gap-1 text-[11px] font-bold text-amber-300 group-hover:translate-x-1 transition-transform">
-                Explore Products &rarr;
+
+              <div className="absolute bottom-0 inset-x-0 p-3 text-white" style={{ transform: 'translateZ(15px)' }}>
+                <h3 className="text-xs font-serif font-black tracking-tight leading-snug drop-shadow-md group-hover:text-amber-300 transition-colors">
+                  {category.name}
+                </h3>
+                {category.subText && (
+                  <p className="text-[10px] text-emerald-200 mt-0.5 line-clamp-1 font-light">
+                    {category.subText}
+                  </p>
+                )}
+                <div className="mt-1 flex items-center gap-1 text-[9px] font-black text-amber-300 group-hover:translate-x-1.5 transition-transform uppercase">
+                  <span>View Stock</span>
+                  <span>&rarr;</span>
+                </div>
               </div>
             </div>
-          </div>
+          </ThreeDCard>
         ))}
       </div>
     </section>

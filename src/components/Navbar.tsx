@@ -1,23 +1,24 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Search, ShoppingBag, User, Menu, X, Ruler, Sparkles, PhoneCall, Heart, MessageCircle, MapPin, Truck } from 'lucide-react';
+import { Search, User, Menu, X, Ruler, Sparkles, PhoneCall, Heart, MessageCircle, MapPin, Truck, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAuth } from '../context/AuthContext';
 import { useStore } from '../context/StoreContext';
 import ConfirmModal from './ConfirmModal';
 import SizeGuideModal from './SizeGuideModal';
 
+
+
 export default function Navbar() {
   const { isLoggedIn, role, logout } = useAuth();
-  const { cartItems, wishlistItems } = useStore();
+  const { wishlistItems } = useStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-
-  const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleProfileClick = () => {
     if (role === 'admin') {
@@ -32,220 +33,156 @@ export default function Navbar() {
     navigate('/');
   };
 
-  const handleSearch = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && searchQuery.trim()) {
+  const handleSearchSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (searchQuery.trim()) {
       navigate(`/categories?q=${encodeURIComponent(searchQuery.trim())}`);
       setIsMobileMenuOpen(false);
+      setIsSearchOpen(false);
     }
   };
 
+  const tickerItems = [
+    '🔥 DIRECT WEAVER & POWERLOOM WHOLESALE RATES',
+    '✨ ERODE WHOLESALE TEXTILE & SAREE MARKET',
+    '🚚 DAILY ALL-INDIA PARCEL & LORRY TRANSPORT',
+    '💬 WHATSAPP ORDERS: 9655147000 / 9655148000',
+    '⭐ BEST QUALITY PURE COTTON SAREES & NIGHTIES BALES',
+    '📍 53/A, ESWARAN TEMPLE, KAMARAJAR ST - 1, ERODE'
+  ];
+
   return (
     <>
-      {/* Top Erode Market Announcement Bar */}
-      <div className="bg-[#1e1b4b] text-indigo-100 text-[11px] border-b border-indigo-900">
-        <div className="w-full px-4 sm:px-6 lg:px-8 py-2 flex flex-col md:flex-row items-center justify-between gap-2">
-          {/* Left Location & Market Badge */}
-          <div className="flex items-center gap-3 justify-center md:justify-start flex-wrap">
-            <span className="bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded text-[10px] uppercase tracking-wider flex items-center gap-1">
-              <Sparkles size={11} /> Erode Wholesale Market
-            </span>
-            <span className="flex items-center gap-1 text-indigo-200">
-              <MapPin size={12} className="text-amber-300" />
-              53/A, Eswaran Temple, Kamarajar St - 1, Erode - 638001
-            </span>
-            <span className="hidden lg:inline text-indigo-700">|</span>
-            <span className="hidden lg:flex items-center gap-1 text-emerald-300 font-semibold">
-              <Truck size={12} /> All-India Parcel &amp; Transport Dispatch
-            </span>
-          </div>
+      {/* Top Divine Invocation & Quick Hotline Header (Matching Exact Reference) */}
+      <div className="bg-[#012217] text-white py-2 px-3 border-b border-emerald-900/80 flex flex-col items-center justify-center gap-1.5 text-center relative z-50">
+        {/* Golden Divine Invocation Pill */}
+        <motion.div 
+          animate={{ scale: [1, 1.02, 1] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          className="inline-flex items-center gap-1.5 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 text-slate-950 font-black text-[11px] px-3.5 py-0.5 rounded-full shadow-md border border-amber-200"
+        >
+          <Sparkles size={11} className="text-amber-900" />
+          <span>வெங்கடேசப்பெருமான் நங்கம்மா தாய் துணை</span>
+          <Sparkles size={11} className="text-amber-900" />
+        </motion.div>
 
-          {/* Right Direct WhatsApp Orders */}
-          <div className="flex items-center gap-4 text-indigo-200">
-            <button
-              onClick={() => setIsSizeGuideOpen(true)}
-              className="hover:text-white flex items-center gap-1 text-[11px] font-bold"
-            >
-              <Ruler size={13} className="text-amber-300" />
-              Size Guide
-            </button>
-
-            <span className="text-indigo-700">|</span>
-
-            <a
-              href="https://wa.me/919655147000?text=Vanakkam%20Sri%20Aadhi%20Nayaga%20Tex,%20I%20want%20to%20place%20an%20order."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-green-300 flex items-center gap-1 text-[11px] font-bold text-green-300"
-            >
-              <MessageCircle size={13} />
-              <span>WhatsApp Orders: 9655147000 / 9655148000</span>
-            </a>
-          </div>
+        {/* Quick links & numbers */}
+        <div className="flex items-center justify-center gap-2.5 text-[10px] text-emerald-200 font-semibold pt-0.5 flex-wrap">
+          <button 
+            onClick={() => setIsSizeGuideOpen(true)}
+            className="inline-flex items-center gap-1 text-emerald-200 hover:text-white transition-colors"
+          >
+            <Ruler size={11} className="text-amber-300" />
+            <span>Size Guide</span>
+          </button>
+          <span className="text-emerald-700">|</span>
+          <a 
+            href="tel:965537000"
+            className="inline-flex items-center gap-1 hover:text-white transition-colors font-bold text-amber-300"
+          >
+            <PhoneCall size={11} className="text-amber-300" />
+            <span>Call: 96553 7000 / 96553 9800</span>
+          </a>
         </div>
+
+        {/* WhatsApp direct link */}
+        <a 
+          href="https://wa.me/919655147000?text=Vanakkam%20Sri%20Aadhi%20Nayaga%20Tex"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-[11px] text-[#25D366] hover:text-emerald-300 font-bold transition-colors"
+        >
+          <MessageCircle size={12} className="text-[#25D366]" />
+          <span>WhatsApp: 9655147000</span>
+        </a>
       </div>
 
-      {/* Main Navbar */}
-      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-indigo-100 shadow-sm">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            {/* Left: Brand Logo */}
-            <div 
-              className="flex-shrink-0 flex items-center gap-3 cursor-pointer group"
-              onClick={() => navigate('/')}
-            >
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-900 via-indigo-800 to-amber-500 flex items-center justify-center text-white font-serif font-black text-2xl shadow-md shadow-indigo-900/20">
-                A
-              </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="font-serif text-[20px] font-black text-slate-900 tracking-tight">
-                    SRI AADHI NAYAGA TEX
-                  </span>
-                  <span className="bg-amber-100 text-amber-900 text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider border border-amber-300">
-                    ERODE WHOLESALE
-                  </span>
-                </div>
-                <span className="text-[10px] text-gray-500 font-semibold tracking-wider uppercase">
-                  Textiles &amp; Saree Market • Wholesale &amp; Retail
+      {/* Main Mobile Header (Matching Exact Reference Layout) */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-emerald-100 shadow-[0_4px_20px_rgba(6,78,59,0.08)]">
+        <div className="px-3 py-2 flex items-center justify-between gap-2">
+          
+          {/* Brand Logo & Dual-Language Title */}
+          <div 
+            className="flex items-center gap-2.5 cursor-pointer min-w-0 group"
+            onClick={() => navigate('/')}
+          >
+            {/* Round Medallion Avatar with Gold Rim */}
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#064E3B] via-emerald-800 to-amber-500 flex items-center justify-center text-amber-300 font-serif font-black text-xl shadow-md border-2 border-amber-400 shrink-0">
+              <span className="drop-shadow-xs">A</span>
+            </div>
+
+            <div className="flex flex-col min-w-0">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <h1 className="font-serif text-[14px] font-black tracking-tight text-slate-900 leading-tight">
+                  SRI AADHI NAYAGA TEX
+                </h1>
+                <span className="bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 text-[8px] font-black px-1.5 py-0.5 rounded-md uppercase shadow-xs">
+                  SURAT RATES
                 </span>
               </div>
-            </div>
 
-            {/* Center: Category Links */}
-            <div className="hidden xl:flex items-center space-x-6">
-              <Link 
-                to="/" 
-                className={`text-xs uppercase tracking-wider font-bold transition-colors ${location.pathname === '/' ? 'text-indigo-700 font-black' : 'text-slate-700 hover:text-indigo-600'}`}
-              >
-                Home
-              </Link>
-
-              <Link 
-                to="/categories?q=Sarees" 
-                className="text-xs uppercase tracking-wider font-bold text-slate-700 hover:text-indigo-600 transition-colors"
-              >
-                Sarees
-              </Link>
-
-              <Link 
-                to="/categories?q=Nighties" 
-                className="text-xs uppercase tracking-wider font-bold text-slate-700 hover:text-indigo-600 transition-colors"
-              >
-                Nighties
-              </Link>
-
-              <Link 
-                to="/categories?q=Inskirts" 
-                className="text-xs uppercase tracking-wider font-bold text-slate-700 hover:text-indigo-600 transition-colors"
-              >
-                Inskirts &amp; Blouses
-              </Link>
-
-              <Link 
-                to="/categories?q=Lungis" 
-                className="text-xs uppercase tracking-wider font-bold text-slate-700 hover:text-indigo-600 transition-colors"
-              >
-                Lungis
-              </Link>
-
-              <Link 
-                to="/categories?q=Churidars" 
-                className="text-xs uppercase tracking-wider font-bold text-slate-700 hover:text-indigo-600 transition-colors"
-              >
-                Churidars
-              </Link>
-
-              <Link 
-                to="/categories?q=Tops" 
-                className="text-xs uppercase tracking-wider font-bold text-slate-700 hover:text-indigo-600 transition-colors"
-              >
-                Tops &amp; Kurtis
-              </Link>
-
-              <Link 
-                to="/categories?q=Vetti" 
-                className="text-xs uppercase tracking-wider font-bold text-slate-700 hover:text-indigo-600 transition-colors"
-              >
-                Vetti &amp; Sattai
-              </Link>
-
-              <Link 
-                to="/contact" 
-                className={`text-xs uppercase tracking-wider font-bold transition-colors ${location.pathname === '/contact' ? 'text-indigo-700 font-black' : 'text-slate-700 hover:text-indigo-600'}`}
-              >
-                Shop Address &amp; Orders
-              </Link>
-            </div>
-
-            {/* Right: Search, Wishlist, Bag & User */}
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              {/* Search Bar */}
-              <div className="hidden md:flex relative">
-                <input 
-                  type="text" 
-                  placeholder="Search Sarees, Nighties, Lungis, Vetti..." 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={handleSearch}
-                  className="bg-indigo-50/50 hover:bg-indigo-50 focus:bg-white border border-indigo-200 text-xs rounded-full pl-4 pr-9 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-52 lg:w-64 transition-all"
-                />
-                <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-indigo-400 h-4 w-4" />
-              </div>
-
-              {/* Wishlist */}
-              <button
-                onClick={() => navigate('/wishlist')}
-                title="Wishlist"
-                className="p-2 text-slate-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors relative"
-              >
-                <Heart className="h-5 w-5" />
-                {wishlistItems.length > 0 && (
-                  <span className="absolute top-1 right-1 bg-rose-600 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">
-                    {wishlistItems.length}
-                  </span>
-                )}
-              </button>
-
-              {/* WhatsApp Order & Call Enquiries (Only WhatsApp & Call Orders) */}
-              <a 
-                href="https://wa.me/919655147000?text=Vanakkam%20Sri%20Aadhi%20Nayaga%20Tex,%20I%20want%20to%20place%20an%20order."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 bg-green-600 hover:bg-green-700 text-white px-3.5 py-2 rounded-full transition-all shadow-sm text-xs font-bold"
-                title="WhatsApp Order: 9655147000"
-              >
-                <MessageCircle className="h-4 w-4" />
-                <span className="hidden sm:inline">WhatsApp Order</span>
-              </a>
-
-              <a 
-                href="tel:9655148000"
-                className="hidden md:flex items-center gap-1.5 bg-slate-900 hover:bg-black text-white px-3.5 py-2 rounded-full transition-all shadow-sm text-xs font-bold"
-                title="Call Enquiry: 9655148000"
-              >
-                <PhoneCall className="h-3.5 w-3.5 text-amber-400" />
-                <span>Call Enquiry</span>
-              </a>
-              
-              {/* Profile */}
-              <button 
-                onClick={handleProfileClick}
-                className={`p-2 rounded-full transition-colors border border-gray-200 ${location.pathname === '/profile' || location.pathname === '/admin' ? 'text-indigo-900 bg-indigo-100' : 'text-slate-700 hover:text-indigo-600 hover:bg-indigo-50'}`}
-                title={isLoggedIn ? (role === 'admin' ? "Admin Portal" : "My Account") : "My Account"}
-              >
-                <User className="h-5 w-5" />
-              </button>
-
-              {/* Mobile Menu */}
-              <button 
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="xl:hidden p-2 text-slate-700 hover:text-indigo-600 transition-colors"
-              >
-                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
+              <p className="text-[9px] text-emerald-800 font-extrabold tracking-wide uppercase truncate mt-0.5">
+                ஸ்ரீ ஆதி நாயகா டெக்ஸ் • WHOLESALE &amp; RETAIL ERODE
+              </p>
             </div>
           </div>
+
+          {/* Right Action Icons: Wishlist & Drawer */}
+          <div className="flex items-center gap-1 shrink-0">
+            <motion.button
+              whileTap={{ scale: 0.88 }}
+              onClick={() => navigate('/wishlist')}
+              className="p-2 text-slate-700 hover:text-rose-600 rounded-full transition-colors relative"
+              title="Wishlist"
+            >
+              <Heart size={19} />
+              {wishlistItems.length > 0 && (
+                <span className="absolute top-1 right-1 bg-rose-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
+                  {wishlistItems.length}
+                </span>
+              )}
+            </motion.button>
+
+            <motion.button 
+              whileTap={{ scale: 0.88 }}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 text-slate-800 hover:text-emerald-800 rounded-full transition-colors"
+            >
+              {isMobileMenuOpen ? <X size={20} className="text-emerald-800" /> : <Menu size={20} />}
+            </motion.button>
+          </div>
         </div>
+
+        {/* Continuous Laser Border */}
+        <div className="h-[2px] w-full animate-laser" />
+
+        {/* Expandable Mobile Search Bar with Slide-Down Animation */}
+        <AnimatePresence>
+          {isSearchOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="px-3 pb-2.5 overflow-hidden border-t border-emerald-50 bg-emerald-50/20"
+            >
+              <form onSubmit={handleSearchSubmit} className="relative mt-2">
+                <input
+                  type="text"
+                  placeholder="Search Sarees, Nighties, Lungis, Vetti..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  autoFocus
+                  className="w-full bg-white border-2 border-emerald-300 text-xs rounded-xl pl-3.5 pr-9 py-2.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm"
+                />
+                <button type="submit" className="absolute right-2.5 top-1/2 -translate-y-1/2 text-emerald-600 p-1">
+                  <Search size={16} />
+                </button>
+              </form>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
 
         {/* Mobile Navigation Drawer */}
         <AnimatePresence>
@@ -254,74 +191,90 @@ export default function Navbar() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="xl:hidden bg-white border-t border-indigo-100 overflow-hidden shadow-2xl"
+              transition={{ duration: 0.28, ease: 'easeInOut' }}
+              className="bg-white border-t border-emerald-100 shadow-2xl overflow-hidden"
             >
-              <div className="px-4 py-5 space-y-2.5 text-xs">
-                <div className="relative mb-3">
-                  <input 
-                    type="text" 
-                    placeholder="Search Sarees, Nighties, Lungis, Vetti..." 
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyDown={handleSearch}
-                    className="w-full bg-indigo-50/60 border border-indigo-200 text-xs rounded-xl pl-4 pr-10 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                  <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-indigo-400 h-4 w-4" />
+              <div className="p-4 space-y-3 text-xs">
+                {/* Store Profile Card with 3D Border Glow */}
+                <div className="bg-gradient-to-br from-emerald-50 to-green-50/60 p-3 rounded-2xl border border-emerald-200/80 flex items-center justify-between shadow-xs">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-700 to-green-500 text-white font-bold flex items-center justify-center font-serif text-lg shadow-sm">
+                      A
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-900 text-xs">Sri Aadhi Nayaga Tex</h4>
+                      <p className="text-[10px] text-emerald-800 font-medium">Erode Wholesale Textile Hub</p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] bg-emerald-600 text-white font-black px-2.5 py-0.5 rounded-full shadow-xs">
+                    Direct Weaver
+                  </span>
                 </div>
 
-                <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-lg font-bold text-slate-800">
-                  Home
-                </Link>
-                <Link to="/categories?q=Sarees" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-lg font-bold text-slate-800">
-                  Sarees (Cotton, Soft Silk, Pattu, Fancy)
-                </Link>
-                <Link to="/categories?q=Nighties" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-lg font-bold text-slate-800">
-                  Cotton &amp; Feeding Nighties
-                </Link>
-                <Link to="/categories?q=Inskirts" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-lg font-bold text-slate-800">
-                  Inskirts (Petticoats) &amp; Blouses
-                </Link>
-                <Link to="/categories?q=Lungis" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-lg font-bold text-slate-800">
-                  Erode Handloom Cotton Lungis
-                </Link>
-                <Link to="/categories?q=Churidars" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-lg font-bold text-slate-800">
-                  Readymade Churidars &amp; Materials
-                </Link>
-                <Link to="/categories?q=Tops" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-lg font-bold text-slate-800">
-                  Tops &amp; Kurtis
-                </Link>
-                <Link to="/categories?q=Vetti" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-lg font-bold text-slate-800">
-                  Vetti &amp; Sattai (Dhoti &amp; Shirt Sets)
-                </Link>
-                <Link to="/categories?q=Lining" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-lg font-bold text-slate-800">
-                  Lining Materials &amp; Innerwear
-                </Link>
-                <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-lg font-bold text-indigo-700">
-                  Erode Shop Address &amp; Wholesale Orders
-                </Link>
+                {/* Category Links */}
+                <div className="space-y-1 pt-1">
+                  <div className="text-[10px] font-black uppercase text-emerald-800 tracking-wider px-2">
+                    Browse Categories
+                  </div>
+                  {[
+                    { label: 'Sarees (Cotton, Soft Silk, Pattu)', q: 'Sarees' },
+                    { label: 'Pure Cotton & Feeding Nighties', q: 'Nighties' },
+                    { label: 'Inskirts (Petticoats) & Blouses', q: 'Inskirts' },
+                    { label: 'Erode Handloom Cotton Lungis', q: 'Lungis' },
+                    { label: 'Churidars & Dress Materials', q: 'Churidars' },
+                    { label: 'Tops & Kurtis Collection', q: 'Tops' },
+                    { label: 'Vetti & Sattai Sets', q: 'Vetti' },
+                    { label: 'Lining & Tailoring Materials', q: 'Lining' }
+                  ].map((item, idx) => (
+                    <motion.div key={idx} whileTap={{ scale: 0.98 }}>
+                      <Link 
+                        to={`/categories?q=${encodeURIComponent(item.q)}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center justify-between px-3 py-2 rounded-xl text-slate-800 hover:bg-emerald-50 font-bold transition-colors"
+                      >
+                        <span>{item.label}</span>
+                        <ChevronRight size={14} className="text-emerald-600" />
+                      </Link>
+                    </motion.div>
+                  ))}
+                </div>
 
-                <div className="pt-3 border-t border-indigo-100 flex flex-col gap-2">
-                  <a
+                {/* Quick Info & Action Buttons */}
+                <div className="pt-2 border-t border-emerald-100 space-y-2">
+                  <Link 
+                    to="/contact" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-emerald-800 bg-emerald-50/80 font-bold"
+                  >
+                    <MapPin size={15} className="text-emerald-600 shrink-0" />
+                    <span className="truncate">53/A, Eswaran Temple, Kamarajar St - 1, Erode</span>
+                  </Link>
+
+                  <motion.a
                     href="https://wa.me/919655147000?text=Vanakkam%20Sri%20Aadhi%20Nayaga%20Tex"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-1.5 bg-green-600 text-white py-2.5 rounded-xl font-bold text-xs"
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center justify-center gap-2 bg-[#25D366] text-white py-2.5 rounded-xl font-bold text-xs shadow-md shadow-emerald-600/30"
                   >
-                    <MessageCircle size={15} /> WhatsApp Orders: 9655147000
-                  </a>
-                  <a
+                    <MessageCircle size={16} />
+                    WhatsApp Orders: 9655147000
+                  </motion.a>
+
+                  <motion.a
                     href="tel:9655148000"
-                    className="flex items-center justify-center gap-1.5 bg-slate-900 text-white py-2.5 rounded-xl font-bold text-xs"
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center justify-center gap-2 bg-emerald-950 text-white py-2.5 rounded-xl font-bold text-xs"
                   >
-                    <PhoneCall size={14} className="text-amber-400" /> Call Enquiries: 9655148000 / 9655147000
-                  </a>
+                    <PhoneCall size={15} className="text-emerald-300" />
+                    Call Hotline: 9655148000
+                  </motion.a>
                 </div>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-      </nav>
+      </header>
 
       {/* Size Guide Modal */}
       <SizeGuideModal

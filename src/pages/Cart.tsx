@@ -26,6 +26,12 @@ export default function Cart() {
   const [discountApplied, setDiscountApplied] = useState(false);
   const [giftWrap, setGiftWrap] = useState(false);
 
+  const handleApplyPromo = () => {
+    if (promoCode.trim()) {
+      setDiscountApplied(true);
+    }
+  };
+
   const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   

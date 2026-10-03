@@ -1,23 +1,193 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  
-  --animate-marquee: marquee 20s linear infinite;
-  
-  @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: #FAFAFA;
+  background-color: #EBF5EE;
+  color: #1e293b;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  font-family: var(--font-sans);
+::selection {
+  background-color: #A7F3D0;
+  color: #064E3B;
+}
+
+/* 3D Perspective & Transform Helpers */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.perspective-800 {
+  perspective: 800px;
+}
+.perspective-500 {
+  perspective: 500px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* 3D Extruded Text Shadows */
+.text-3d-emerald {
+  text-shadow: 
+    0 1px 0 #059669,
+    0 2px 0 #047857,
+    0 3px 0 #065f46,
+    0 4px 0 #064e3b,
+    0 6px 10px rgba(0, 0, 0, 0.4);
+}
+
+.text-3d-gold {
+  text-shadow: 
+    0 1px 0 #f59e0b,
+    0 2px 0 #d97706,
+    0 3px 0 #b45309,
+    0 4px 0 #78350f,
+    0 6px 12px rgba(0, 0, 0, 0.35);
+}
+
+.text-3d-white {
+  text-shadow: 
+    0 1px 0 #e2e8f0,
+    0 2px 0 #cbd5e1,
+    0 3px 0 #94a3b8,
+    0 4px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Dynamic Keyframe Animations */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes gradient-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float-3d {
+  0%, 100% { 
+    transform: translateY(0px) rotateX(0deg) rotateY(0deg); 
+  }
+  25% { 
+    transform: translateY(-5px) rotateX(4deg) rotateY(3deg); 
+  }
+  50% { 
+    transform: translateY(-8px) rotateX(0deg) rotateY(-3deg); 
+  }
+  75% { 
+    transform: translateY(-4px) rotateX(-3deg) rotateY(2deg); 
+  }
+}
+
+@keyframes rotate-3d-coin {
+  0% { transform: perspective(800px) rotateY(0deg) rotateX(5deg); }
+  50% { transform: perspective(800px) rotateY(180deg) rotateX(-5deg); }
+  100% { transform: perspective(800px) rotateY(360deg) rotateX(5deg); }
+}
+
+@keyframes rotate-slow-z {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.15); opacity: 0.3; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+@keyframes laser-sweep {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes shimmer-sweep {
+  0% { transform: translateX(-150%) skewX(-20deg); }
+  100% { transform: translateX(250%) skewX(-20deg); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.4), inset 0 0 10px rgba(16, 185, 129, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.85), 0 0 45px rgba(52, 211, 153, 0.5), inset 0 0 16px rgba(16, 185, 129, 0.4);
+  }
+}
+
+/* Custom Animation Utility Classes */
+.animate-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 16s linear infinite;
+}
+
+.animate-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.animate-gradient-text {
+  background-size: 250% auto;
+  animation: gradient-flow 3s linear infinite;
+}
+
+.animate-float-3d {
+  animation: float-3d 4s ease-in-out infinite;
+}
+
+.animate-spin-3d {
+  animation: rotate-3d-coin 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-rotate-slow {
+  animation: rotate-slow-z 12s linear infinite;
+}
+
+.animate-glow {
+  animation: glow-pulse 2s infinite ease-in-out;
+}
+
+.animate-laser {
+  background: linear-gradient(90deg, #10b981, #34d399, #fbbf24, #10b981);
+  background-size: 300% 100%;
+  animation: laser-sweep 3s linear infinite;
+}
+
+.animate-shimmer-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer-sweep 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
 }

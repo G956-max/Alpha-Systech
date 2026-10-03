@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ProductGrid from '../components/ProductGrid';
-import { X, Ruler, MapPin, PhoneCall, MessageCircle } from 'lucide-react';
+import { X, Ruler, MessageCircle, SlidersHorizontal } from 'lucide-react';
 import SizeGuideModal from '../components/SizeGuideModal';
 
 export default function Categories() {
@@ -9,10 +9,11 @@ export default function Categories() {
   const searchParams = new URLSearchParams(location.search);
   const searchQuery = searchParams.get('q');
   
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(searchQuery || null);
   const [priceRange, setPriceRange] = useState<number>(3000);
   const [selectedFabrics, setSelectedFabrics] = useState<string[]>([]);
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
 
   const toggleFabric = (fabric: string) => {
     if (selectedFabrics.includes(fabric)) {
@@ -28,7 +29,7 @@ export default function Categories() {
     'Inskirts',
     'Blouses',
     'Lungis',
-    'Churidars & Materials',
+    'Churidars',
     'Tops & Kurtis',
     'Vetti & Sattai',
     'Lining & Inners'
@@ -45,133 +46,129 @@ export default function Categories() {
   };
 
   return (
-    <div className="bg-[#FAF9F6] min-h-screen font-sans text-slate-900 pb-20">
-      {/* Header Banner */}
-      <div className="bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900 text-white pt-12 pb-10 border-b border-indigo-900">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="bg-amber-400 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                  Erode Wholesale Catalog
-                </span>
-                <span className="text-xs text-indigo-300">53/A, Eswaran Temple, Kamarajar St - 1, Erode</span>
-              </div>
-              <h1 className="text-3xl sm:text-4xl font-serif font-black tracking-tight">
-                {searchQuery ? `Products matching "${searchQuery}"` : 'Textile & Saree Market Catalog'}
-              </h1>
-              <p className="text-indigo-200 text-xs sm:text-sm mt-1 max-w-2xl font-light">
-                Direct manufacturer prices for Sarees, Nighties, Inskirts, Blouses, Lungis, Churidars, Tops &amp; Kurtis, Vetti &amp; Sattai, and Lining Materials.
-              </p>
-            </div>
+    <div className="bg-[#F7FCF9] min-h-screen font-sans text-slate-900 pb-4">
+      {/* Mobile Top Header Banner with Emerald/Green theme */}
+      <div className="bg-gradient-to-b from-[#064E3B] via-[#047857] to-[#065F46] text-white p-4 pt-5 pb-5">
+        <div className="flex items-center justify-between gap-2 mb-2">
+          <span className="bg-emerald-400 text-emerald-950 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+            Erode Catalog
+          </span>
+          <button
+            onClick={() => setIsSizeGuideOpen(true)}
+            className="flex items-center gap-1 text-[10px] font-bold text-emerald-200 bg-emerald-950/50 border border-emerald-400/30 px-2.5 py-1 rounded-full"
+          >
+            <Ruler size={12} /> Size Chart
+          </button>
+        </div>
 
-            <div className="flex items-center gap-3">
-              <a
-                href="https://wa.me/919655147000?text=Vanakkam%20Sri%20Aadhi%20Nayaga%20Tex,%20I%20want%20to%20inquire%20about%20products."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-green-600 hover:bg-green-500 text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase flex items-center gap-1.5 shadow"
-              >
-                <MessageCircle size={14} /> WhatsApp 9655147000
-              </a>
-              <button
-                onClick={() => setIsSizeGuideOpen(true)}
-                className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-4 py-2.5 rounded-full text-xs font-bold uppercase transition-colors"
-              >
-                <Ruler size={14} /> Size Chart
-              </button>
-            </div>
-          </div>
+        <h1 className="text-xl font-serif font-black tracking-tight leading-tight">
+          {searchQuery ? `"${searchQuery}" Results` : 'Wholesale Textile Catalog'}
+        </h1>
+        <p className="text-emerald-100/90 text-xs mt-1 leading-relaxed">
+          Direct Erode weaver prices for Sarees, Nighties, Inskirts, Lungis, Churidars &amp; Sets.
+        </p>
 
-          {/* Interactive Filters Bar */}
-          <div className="bg-white/10 backdrop-blur-md p-5 rounded-3xl border border-white/10 space-y-4">
-            {/* Category Pills */}
-            <div>
-              <span className="block text-[10px] font-bold text-amber-200 uppercase tracking-widest mb-2">
-                Select Product Category:
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {categories.map((cat) => {
-                  const isActive = selectedCategory === cat;
-                  return (
-                    <button
-                      key={cat}
-                      onClick={() => setSelectedCategory(isActive ? null : cat)}
-                      className={`px-3.5 py-2 rounded-full text-xs font-bold transition-all ${
-                        isActive
-                          ? 'bg-amber-400 text-slate-950 shadow-md'
-                          : 'bg-white/10 hover:bg-white/20 text-indigo-100 border border-white/10'
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Row of Detailed Filters */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-3 border-t border-white/10 items-end">
-              {/* Max Price Slider */}
-              <div>
-                <div className="flex justify-between items-center mb-1 text-[11px]">
-                  <span className="text-indigo-200 font-bold uppercase tracking-wider">Max Price:</span>
-                  <span className="text-amber-300 font-black">₹{priceRange.toLocaleString()}</span>
-                </div>
-                <input
-                  type="range"
-                  min="200"
-                  max="3000"
-                  step="100"
-                  value={priceRange}
-                  onChange={(e) => setPriceRange(Number(e.target.value))}
-                  className="w-full h-1.5 bg-indigo-900 rounded-lg appearance-none cursor-pointer accent-amber-400"
-                />
-              </div>
-
-              {/* Fabric Filter */}
-              <div>
-                <span className="block text-indigo-200 font-bold uppercase tracking-wider text-[11px] mb-1.5">
-                  Fabric:
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {fabrics.map((fab) => (
-                    <button
-                      key={fab}
-                      onClick={() => toggleFabric(fab)}
-                      className={`px-3 py-1 rounded-full text-[11px] font-bold transition-all ${
-                        selectedFabrics.includes(fab)
-                          ? 'bg-amber-400 text-slate-950 shadow'
-                          : 'bg-white/10 hover:bg-white/20 text-indigo-100 border border-white/10'
-                      }`}
-                    >
-                      {fab}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Reset */}
-              <div className="flex items-center justify-end">
-                {hasActiveFilters && (
-                  <button
-                    onClick={clearAllFilters}
-                    className="flex items-center gap-1 text-rose-300 hover:text-white text-xs font-bold transition-colors"
-                  >
-                    <X size={14} /> Reset Filters
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
+        {/* WhatsApp Direct Order Bar */}
+        <div className="mt-3">
+          <a
+            href="https://wa.me/919655147000?text=Vanakkam%20Sri%20Aadhi%20Nayaga%20Tex,%20I%20want%20to%20inquire%20about%20products."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full bg-[#25D366] hover:bg-[#20ba5a] text-white py-2 px-3 rounded-xl text-xs font-bold uppercase flex items-center justify-center gap-1.5 shadow"
+          >
+            <MessageCircle size={15} /> WhatsApp Enquiry: 9655147000
+          </a>
         </div>
       </div>
-      
-      {/* Product Grid Area */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-12">
+
+      {/* Horizontal Category Selection Pills */}
+      <div className="bg-white border-b border-emerald-100 p-3 shadow-xs">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-[10px] font-extrabold text-emerald-800 uppercase tracking-wider">
+            Filter By Category:
+          </span>
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className={`flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md border ${
+              showFilters ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-gray-50 text-gray-600 border-gray-200'
+            }`}
+          >
+            <SlidersHorizontal size={11} /> {showFilters ? 'Hide Filters' : 'Fabric Filter'}
+          </button>
+        </div>
+
+        <div className="flex flex-wrap gap-1.5">
+          <button
+            onClick={() => setSelectedCategory(null)}
+            className={`px-3 py-1 rounded-full text-[11px] font-bold transition-all ${
+              selectedCategory === null
+                ? 'bg-emerald-600 text-white shadow-xs'
+                : 'bg-emerald-50 text-slate-700 hover:bg-emerald-100 border border-emerald-100'
+            }`}
+          >
+            All Stock
+          </button>
+          {categories.map((cat) => {
+            const isActive = selectedCategory === cat;
+            return (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(isActive ? null : cat)}
+                className={`px-3 py-1 rounded-full text-[11px] font-bold transition-all ${
+                  isActive
+                    ? 'bg-emerald-600 text-white shadow-xs'
+                    : 'bg-emerald-50/80 text-slate-700 hover:bg-emerald-100 border border-emerald-100'
+                }`}
+              >
+                {cat}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Expandable Fabric Filters */}
+        {showFilters && (
+          <div className="mt-3 pt-3 border-t border-emerald-100 space-y-3 bg-emerald-50/40 p-2.5 rounded-xl">
+            {/* Fabric Pills */}
+            <div>
+              <span className="block text-slate-700 font-bold uppercase tracking-wider text-[10px] mb-1">
+                Filter by Fabric:
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {fabrics.map((fab) => (
+                  <button
+                    key={fab}
+                    onClick={() => toggleFabric(fab)}
+                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold transition-all ${
+                      selectedFabrics.includes(fab)
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-white text-slate-600 border border-emerald-200'
+                    }`}
+                  >
+                    {fab}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {hasActiveFilters && (
+              <div className="pt-1 flex justify-end">
+                <button
+                  onClick={clearAllFilters}
+                  className="flex items-center gap-1 text-rose-600 text-[10px] font-bold"
+                >
+                  <X size={12} /> Reset All Filters
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* 2-Column Product Grid Area */}
+      <div className="p-3">
         <ProductGrid 
           categoryFilter={selectedCategory}
-          priceFilter={priceRange}
           fabricFilter={selectedFabrics}
           searchFilter={searchQuery}
         />

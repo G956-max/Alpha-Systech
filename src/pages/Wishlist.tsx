@@ -1,63 +1,79 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Trash2, ShoppingCart, Boxes, MessageCircle } from 'lucide-react';
+import { Heart, Trash2, MessageCircle, ArrowLeft } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 
 export default function Wishlist() {
   const { wishlistItems, toggleWishlist } = useStore();
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] pb-20 font-sans text-slate-900">
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-8">
-          <span className="bg-emerald-100 text-emerald-800 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-            Dealer Watchlist
+    <div className="min-h-screen bg-[#F7FCF9] pb-6 font-sans text-slate-900">
+      {/* Top Mobile Bar */}
+      <div className="bg-gradient-to-b from-[#064E3B] to-[#047857] text-white p-4 pt-5 pb-5">
+        <div className="flex items-center justify-between mb-1">
+          <span className="bg-emerald-400 text-emerald-950 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+            Saved Items
           </span>
-          <h1 className="text-3xl font-black text-slate-900 mt-2 flex items-center gap-3">
-            <Heart className="text-red-500 fill-red-500" size={28} />
-            Saved Wholesale Lots ({wishlistItems.length})
-          </h1>
+          <Link to="/" className="text-emerald-200 hover:text-white text-xs font-bold flex items-center gap-1">
+            <ArrowLeft size={13} /> Home
+          </Link>
         </div>
+        <h1 className="text-xl font-serif font-black tracking-tight leading-tight flex items-center gap-2">
+          <Heart className="text-rose-400 fill-rose-400" size={20} />
+          My Wishlist ({wishlistItems.length})
+        </h1>
+        <p className="text-emerald-100 text-xs font-light mt-0.5">
+          Items saved for fast WhatsApp enquiry &amp; ordering.
+        </p>
+      </div>
 
+      <div className="p-3">
         {wishlistItems.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          /* Mobile 2-Column Grid */
+          <div className="grid grid-cols-2 gap-2.5">
             {wishlistItems.map((item) => (
-              <div key={item.id} className="group flex flex-col h-full bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-200 relative hover:shadow-md transition-shadow">
+              <div 
+                key={item.id} 
+                className="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-xs border border-emerald-100 relative hover:shadow-md transition-shadow"
+              >
                 <button 
                   onClick={() => toggleWishlist(item)}
-                  className="absolute top-3 right-3 z-10 p-2 bg-white/90 backdrop-blur-md rounded-full text-red-500 hover:text-red-700 transition-all shadow-sm"
-                  title="Remove from Saved Lots"
+                  className="absolute top-2 right-2 z-10 p-1.5 bg-white/90 backdrop-blur-xs rounded-full text-rose-500 shadow-xs"
+                  title="Remove"
                 >
-                  <Trash2 size={16} />
+                  <Trash2 size={13} />
                 </button>
                 
-                <Link to={`/product/${item.id}`} className="h-[220px] w-full bg-gray-50 p-4 flex items-center justify-center overflow-hidden block border-b border-gray-100">
+                <Link to={`/product/${item.id}`} className="aspect-[3/4] w-full bg-emerald-50/30 overflow-hidden block">
                   <img 
                     src={item.imageUrl} 
                     alt={item.name}
-                    className="max-h-full max-w-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                     referrerPolicy="no-referrer"
                   />
                 </Link>
                 
-                <div className="p-4 flex flex-col flex-1 justify-between gap-3">
+                <div className="p-2.5 flex flex-col flex-1 justify-between gap-1.5">
                   <div>
-                    <span className="text-[10px] text-gray-400 font-bold uppercase">{item.category}</span>
-                    <h3 className="text-sm font-bold text-slate-900 line-clamp-2 mt-0.5">{item.name}</h3>
+                    <span className="text-[9px] text-gray-400 font-bold uppercase truncate block">{item.category}</span>
+                    <h3 className="text-xs font-bold text-slate-900 line-clamp-2 leading-snug">{item.name}</h3>
                   </div>
                   
-                  <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-100">
+                  <div className="pt-1.5 border-t border-emerald-50 flex items-center justify-between">
                     <div>
-                      <div className="text-[9px] text-gray-400 uppercase font-semibold">Wholesale Rate</div>
-                      <p className="text-base font-black text-slate-900">₹{item.price.toLocaleString()}</p>
+                      <span className="bg-emerald-700 text-white text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider">
+                        மொத்த விலை
+                      </span>
+                      <p className="text-[10px] font-bold text-emerald-800 mt-0.5">Enquire on WhatsApp</p>
                     </div>
+
                     <a
-                      href={`https://wa.me/919655147000?text=${encodeURIComponent(`Vanakkam Sri Aadhi Nayaga Tex! I am enquiring about: ${item.name} (${item.category}) at wholesale rate ₹${item.price}. Please share photos & bulk order details.`)}`}
+                      href={`https://wa.me/919655147000?text=${encodeURIComponent(`Vanakkam Sri Aadhi Nayaga Tex! I am enquiring about saved item: ${item.name} (#${item.id}). Please share wholesale rates and color availability.`)}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 bg-green-600 text-white px-3.5 py-2 rounded-xl text-xs font-bold hover:bg-green-700 transition-colors shadow-sm"
+                      className="bg-[#25D366] text-white p-1.5 rounded-full shadow-xs hover:bg-[#20ba5a]"
+                      title="WhatsApp Enquiry"
                     >
-                      <MessageCircle size={14} /> WhatsApp
+                      <MessageCircle size={13} />
                     </a>
                   </div>
                 </div>
@@ -65,15 +81,15 @@ export default function Wishlist() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-gray-300 p-8 max-w-lg mx-auto">
-            <Heart size={44} className="mx-auto text-gray-300 mb-3" />
-            <h2 className="text-xl font-bold text-slate-900 mb-1">No saved wholesale lots</h2>
-            <p className="text-xs text-gray-500 mb-6">Found lots you want to track or negotiate later? Bookmark them to review here.</p>
+          <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-emerald-200 p-6">
+            <Heart size={36} className="mx-auto text-emerald-300 mb-2" />
+            <h2 className="text-sm font-bold text-slate-900 mb-0.5">Your Wishlist is Empty</h2>
+            <p className="text-xs text-gray-500 mb-4">Tap the heart on any saree, nighty or lungi to save it here.</p>
             <Link 
               to="/categories" 
-              className="bg-slate-900 text-white px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-black transition-all inline-block shadow-md"
+              className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider inline-block shadow-xs"
             >
-              Browse Active Lots
+              Browse Catalog
             </Link>
           </div>
         )}

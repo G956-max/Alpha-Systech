@@ -2,7 +2,7 @@ export interface TextileProduct {
   id: string;
   name: string;
   brand: string;
-  category: 'Sarees' | 'Nighties' | 'Inskirts' | 'Blouses' | 'Lungis' | 'Churidars & Materials' | 'Tops & Kurtis' | 'Vetti & Sattai' | 'Lining & Inners';
+  category: 'Sarees' | 'Nighties' | 'Inskirts' | 'Blouses' | 'Lungis' | 'Churidars & Materials' | 'Tops & Kurtis' | 'Vetti & Sattai' | 'Lining & Inners' | string;
   image: string;
   images: string[];
   price: number;              // Retail price
@@ -18,6 +18,15 @@ export interface TextileProduct {
   bundleQuantity: number;     // e.g. Pack of 4, 5, 10
   description: string;
   washCare: string;
+  moq?: number;
+  lotSize?: number;
+  stockCartons?: number;
+  conditionGrade?: string;
+  pattern?: string;
+  colorOptions?: string[];
+  sareeLength?: string;
+  blousePiece?: string;
+  tieredPricing?: Array<{ minQty: number; price: number; label: string }>;
 }
 
 export type Product = TextileProduct;
@@ -29,9 +38,9 @@ export const allProducts: Product[] = [
     name: 'Erode Handloom Soft Cotton Daily Wear Saree',
     brand: 'Sri Aadhi Nayaga Tex',
     category: 'Sarees',
-    image: 'https://images.unsplash.com/photo-1610030469668-93510cb07707?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=800',
     images: [
-      'https://images.unsplash.com/photo-1610030469668-93510cb07707?auto=format&fit=crop&q=80&w=800',
+      'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&q=80&w=800',
       'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800'
     ],
     price: 650,
